@@ -7,87 +7,186 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <style>
-        body { background-color: #0f1117; color: #ffffff; font-family: Arial, sans-serif; text-align: center; padding: 15px; margin: 0; padding-bottom: 70px; }
-        .header { margin-top: 10px; }
-        h1 { font-size: 20px; margin-bottom: 5px; }
-        .balance { font-size: 28px; font-weight: bold; color: #4ade80; margin: 15px 0; }
-        .section { display: none; }
+        :root {
+            --bg-color: #0c0f1d;
+            --card-bg: rgba(26, 31, 56, 0.7);
+            --accent-green: #00ff88;
+            --accent-blue: #3b82f6;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+        }
+        body { 
+            background: linear-gradient(135deg, #0c0f1d 0%, #161b33 100%); 
+            color: var(--text-main); 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            text-align: center; 
+            padding: 15px; 
+            margin: 0; 
+            padding-bottom: 90px; 
+            min-height: 100vh;
+        }
+        .header { 
+            margin-top: 15px; 
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        h1 { font-size: 22px; margin-bottom: 5px; background: linear-gradient(45deg, #00ff88, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .balance { font-size: 36px; font-weight: bold; color: var(--accent-green); margin: 10px 0; text-shadow: 0 0 20px rgba(0,255,136,0.3); }
+        .section { display: none; animation: fadeIn 0.4s ease-in-out; }
         .section.active { display: block; }
-        .card { background-color: #1e222d; padding: 12px; border-radius: 12px; margin: 10px 0; text-align: left; display: flex; justify-content: space-between; align-items: center; }
-        .card-info h3 { margin: 0 0 3px 0; font-size: 15px; }
-        .card-info p { margin: 0; color: #94a3b8; font-size: 12px; }
-        .action-btn { background-color: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; }
-        .action-btn:active { background-color: #2563eb; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .card { 
+            background: var(--card-bg); 
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 16px; 
+            border-radius: 16px; 
+            margin: 14px 0; 
+            text-align: left; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .card-info h3 { margin: 0 0 4px 0; font-size: 16px; color: #fff; }
+        .card-info p { margin: 0; color: var(--text-muted); font-size: 12px; }
+        
+        .action-btn { 
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); 
+            color: white; 
+            border: none; 
+            padding: 8px 16px; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-size: 12px; 
+            font-weight: bold; 
+            box-shadow: 0 4px 15px rgba(59,130,246,0.4);
+            transition: 0.2s;
+        }
+        .action-btn:active { transform: scale(0.95); }
+        .action-btn.claimed { background: #374151; color: #9ca3af; box-shadow: none; cursor: not-allowed; }
+
+        /* Streak Grid UI */
+        .streak-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .streak-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+        }
+        .streak-box.active-day { border-color: var(--accent-green); background: rgba(0,255,136,0.1); }
+        .streak-box span { display: block; font-size: 11px; color: var(--text-muted); }
+        .streak-box b { font-size: 14px; color: var(--accent-green); }
+
         #ton-connect { display: flex; justify-content: center; margin: 15px 0; }
         
-        /* Bottom Navigation Bar */
-        .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; background-color: #161922; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #2d3748; z-index: 1000; }
-        .nav-item { background: none; border: none; color: #94a3b8; font-size: 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
-        .nav-item.active { color: #4ade80; }
-        .nav-item span { font-size: 18px; margin-bottom: 2px; }
+        /* Premium Bottom Navigation Bar */
+        .nav-bar { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            background: rgba(15, 17, 23, 0.95); 
+            backdrop-filter: blur(15px);
+            display: flex; 
+            justify-content: space-around; 
+            padding: 12px 0; 
+            border-top: 1px solid rgba(255, 255, 255, 0.1); 
+            z-index: 1000; 
+        }
+        .nav-item { 
+            background: none; 
+            border: none; 
+            color: var(--text-muted); 
+            font-size: 11px; 
+            cursor: pointer; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            transition: 0.3s;
+        }
+        .nav-item.active { color: var(--accent-green); text-shadow: 0 0 10px rgba(0,255,136,0.4); }
+        .nav-item span { font-size: 20px; margin-bottom: 3px; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <h1>Tanjirul Pay & Mine 🚀</h1>
-        <div class="balance" id="score">0 TPZ</div>
+        <div class="balance"><span id="score">0</span> TPZ</div>
+        <p style="margin: 0; font-size: 12px; color: var(--text-muted);">Universal Web3 & Telegram Mining Hub</p>
     </div>
 
-    <!-- Universal TON Wallet Connect Button (Supports all Ton wallets) -->
+    <!-- Universal TON Wallet Connect Button -->
     <div id="ton-connect"></div>
 
     <!-- HOME SECTION -->
     <div id="home-section" class="section active">
-        <div class="card" style="justify-content: center; text-align: center; background: linear-gradient(135deg, #1e222d, #252b3b);">
-            <div>
-                <h3>⚡ Mining Active</h3>
-                <p>Tap below to boost your daily earnings.</p>
-                <button class="action-btn" style="margin-top: 10px; padding: 10px 20px;" onclick="alert('Mining claimed successfully!')">Claim TPZ</button>
+        <div class="card" style="justify-content: center; text-align: center; background: linear-gradient(135deg, rgba(30,34,45,0.9), rgba(20,24,35,0.9)); flex-direction: column; border: 1px solid rgba(0,255,136,0.3);">
+            <h3 style="color: var(--accent-green); font-size: 18px;">⚡ Active Mining Engine</h3>
+            <p style="margin: 8px 0 15px 0; color: var(--text-muted);">Tap below to claim your daily allocation.</p>
+            <button id="claim-btn" class="action-btn" style="padding: 12px 24px; font-size: 14px; background: linear-gradient(135deg, #00ff88, #059669); color: #000; font-weight: bold;" onclick="claimMining()">Claim +150 TPZ</button>
+        </div>
+
+        <div class="card" style="flex-direction: column; align-items: stretch;">
+            <h3>📅 7-Day Daily Streak Check-in</h3>
+            <p style="margin-bottom: 10px;">Check in daily to build your streak and earn mega bonuses!</p>
+            <div class="streak-container">
+                <div class="streak-box active-day"><span>Day 1</span><b>+50</b></div>
+                <div class="streak-box"><span>Day 2</span><b>+100</b></div>
+                <div class="streak-box"><span>Day 3</span><b>+150</b></div>
+                <div class="streak-box"><span>Day 4</span><b>+200</b></div>
             </div>
+            <button id="streak-btn" class="action-btn" style="width: 100%; margin-top: 5px;" onclick="claimStreak()">Claim Today's Streak</button>
         </div>
     </div>
 
     <!-- TASKS SECTION -->
     <div id="tasks-section" class="section">
-        <h3 style="text-align: left; font-size: 16px; margin-bottom: 10px;">📋 Social & Daily Tasks</h3>
+        <h3 style="text-align: left; font-size: 16px; margin-bottom: 12px;">📋 Social & Ecosystem Tasks</h3>
         
-        <div class="card">
+        <div class="card" id="task-tg">
             <div class="card-info">
                 <h3>Join Telegram Channel</h3>
                 <p>Reward: +500 TPZ</p>
             </div>
-            <button class="action-btn" onclick="window.open('https://t.me/YourChannelLink', '_blank')">Start</button>
+            <button class="action-btn" onclick="completeTask('tg', 500, 'https://t.me/tanjirul0123')">Start</button>
         </div>
 
-        <div class="card">
+        <div class="card" id="task-twitter">
             <div class="card-info">
                 <h3>Follow on Twitter (X)</h3>
                 <p>Reward: +300 TPZ</p>
             </div>
-            <button class="action-btn" onclick="window.open('https://twitter.com/YourProfile', '_blank')">Follow</button>
-        </div>
-
-        <div class="card">
-            <div class="card-info">
-                <h3>Daily Check-in</h3>
-                <p>Reward: +100 TPZ</p>
-            </div>
-            <button class="action-btn" onclick="alert('Checked in successfully!')">Claim</button>
+            <button class="action-btn" onclick="completeTask('twitter', 300, 'https://x.com/tanjirul_king')">Follow</button>
         </div>
     </div>
 
     <!-- FRIENDS SECTION -->
     <div id="friends-section" class="section">
-        <h3 style="text-align: left; font-size: 16px; margin-bottom: 10px;">👥 Invite Friends</h3>
+        <h3 style="text-align: left; font-size: 16px; margin-bottom: 12px;">👥 Invite Friends & Earn</h3>
         <div class="card" style="flex-direction: column; align-items: flex-start;">
-            <h3>Referral Link</h3>
-            <p style="word-break: break-all; margin: 8px 0; color: #fff;">t.me/TanjirulMineBot/tanjirul_pay?start=ref12345</p>
-            <button class="action-btn" style="width: 100%; padding: 10px;" onclick="alert('Referral link copied!')">Copy Invite Link</button>
+            <h3>Your Exclusive Referral Link</h3>
+            <p id="ref-link" style="word-break: break-all; margin: 10px 0; color: var(--accent-green); font-size: 11px; background: rgba(0,0,0,0.4); padding: 10px; width: 100%; border-radius: 8px; box-sizing: border-box; border: 1px dashed rgba(0,255,136,0.3);">t.me/TanjirulMineBot/tanjirul_pay</p>
+            <div style="display: flex; gap: 10px; width: 100%;">
+                <button class="action-btn" style="flex: 1; padding: 12px;" onclick="copyRefLink()">📋 Copy Link</button>
+                <button class="action-btn" style="flex: 1; padding: 12px; background: linear-gradient(135deg, #10b981, #047857);" onclick="shareRefLink()">📤 Share</button>
+            </div>
         </div>
     </div>
 
-    <!-- BOTTOM NAVIGATION BAR -->
+    <!-- PREMIUM BOTTOM NAVIGATION BAR -->
     <div class="nav-bar">
         <button class="nav-item active" onclick="switchTab('home', this)">
             <span>🏠</span>Home
@@ -104,7 +203,17 @@
         const tg = window.Telegram.WebApp;
         tg.expand(); 
 
-        // Initializing TonConnect UI with universal support for all wallets
+        // Persistent Balance Management
+        let userScore = localStorage.getItem('tanjirul_score') ? parseInt(localStorage.getItem('tanjirul_score')) : 0;
+        document.getElementById('score').innerText = userScore;
+
+        function updateScore(amount) {
+            userScore += amount;
+            document.getElementById('score').innerText = userScore;
+            localStorage.setItem('tanjirul_score', userScore);
+        }
+
+        // Initialize TonConnect UI
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
             manifestUrl: 'https://rahimraj5373-del.github.io/tanjirul-app/tonconnect-manifest.json',
             buttonRootId: 'ton-connect'
@@ -124,7 +233,71 @@
             }
             element.classList.add('active');
         }
+
+        // Mining Claim Function
+        let lastClaim = localStorage.getItem('last_claim') ? parseInt(localStorage.getItem('last_claim')) : 0;
+        function claimMining() {
+            let now = new Date().getTime();
+            if(now - lastClaim < 24 * 60 * 60 * 1000) {
+                alert('⏳ Daily mining already claimed! Come back tomorrow.');
+                return;
+            }
+            updateScore(150);
+            lastClaim = now;
+            localStorage.setItem('last_claim', lastClaim);
+            let btn = document.getElementById('claim-btn');
+            btn.innerText = 'Claimed Successfully! 🎉';
+            btn.classList.add('claimed');
+        }
+
+        // Streak Claim Function
+        let lastStreak = localStorage.getItem('last_streak') ? parseInt(localStorage.getItem('last_streak')) : 0;
+        function claimStreak() {
+            let now = new Date().getTime();
+            if(now - lastStreak < 24 * 60 * 60 * 1000) {
+                alert('⏳ Streak already claimed for today!');
+                return;
+            }
+            updateScore(50);
+            lastStreak = now;
+            localStorage.setItem('last_streak', lastStreak);
+            let btn = document.getElementById('streak-btn');
+            btn.innerText = 'Streak Claimed (+50 TPZ) ✅';
+            btn.classList.add('claimed');
+        }
+
+        // Task Completion Function with Real Social Links
+        function completeTask(taskId, reward, link) {
+            window.open(link, '_blank');
+            setTimeout(() => {
+                updateScore(reward);
+                let taskCard = document.getElementById('task-' + taskId);
+                taskCard.querySelector('button').innerText = 'Completed ✅';
+                taskCard.querySelector('button').classList.add('claimed');
+                taskCard.querySelector('button').removeAttribute('onclick');
+                alert(`🎉 Congratulations! +${reward} TPZ added to your balance.`);
+            }, 1500);
+        }
+
+        // Referral & Sharing Setup
+        let userId = tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : '123456';
+        let refUrl = `https://t.me/TanjirulMineBot/tanjirul_pay?start=ref_${userId}`;
+        document.getElementById('ref-link').innerText = refUrl;
+
+        function copyRefLink() {
+            navigator.clipboard.writeText(refUrl).then(() => {
+                alert('📋 Referral link copied successfully to clipboard!');
+            }).catch(err => {
+                console.error('Copy failed: ', err);
+            });
+        }
+
+        function shareRefLink() {
+            let shareText = encodeURIComponent("🚀 Join Tanjirul Pay & Mine, complete tasks and start mining TPZ tokens with me!");
+            let telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(refUrl)}&text=${shareText}`;
+            window.open(telegramShareUrl, '_blank');
+        }
     </script>
 </body>
-    </html>
-    
+                                       </html>
+            
