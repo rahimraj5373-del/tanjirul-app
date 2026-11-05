@@ -7,37 +7,124 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <style>
-        body { background-color: #0f1117; color: #ffffff; font-family: Arial, sans-serif; text-align: center; padding: 15px; margin: 0; }
-        .header { margin-top: 20px; }
-        h1 { font-size: 22px; margin-bottom: 5px; }
-        .balance { font-size: 32px; font-weight: bold; color: #4ade80; margin: 20px 0; }
-        .card { background-color: #1e222d; padding: 15px; border-radius: 12px; margin: 10px 0; text-align: left; }
-        .card h3 { margin: 0 0 5px 0; font-size: 16px; }
-        .card p { margin: 0; color: #94a3b8; font-size: 13px; }
-        #ton-connect { display: flex; justify-content: center; margin-top: 20px; }
+        body { background-color: #0f1117; color: #ffffff; font-family: Arial, sans-serif; text-align: center; padding: 15px; margin: 0; padding-bottom: 70px; }
+        .header { margin-top: 10px; }
+        h1 { font-size: 20px; margin-bottom: 5px; }
+        .balance { font-size: 28px; font-weight: bold; color: #4ade80; margin: 15px 0; }
+        .section { display: none; }
+        .section.active { display: block; }
+        .card { background-color: #1e222d; padding: 12px; border-radius: 12px; margin: 10px 0; text-align: left; display: flex; justify-content: space-between; align-items: center; }
+        .card-info h3 { margin: 0 0 3px 0; font-size: 15px; }
+        .card-info p { margin: 0; color: #94a3b8; font-size: 12px; }
+        .action-btn { background-color: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .action-btn:active { background-color: #2563eb; }
+        #ton-connect { display: flex; justify-content: center; margin: 15px 0; }
+        
+        /* Bottom Navigation Bar */
+        .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; background-color: #161922; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #2d3748; z-index: 1000; }
+        .nav-item { background: none; border: none; color: #94a3b8; font-size: 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
+        .nav-item.active { color: #4ade80; }
+        .nav-item span { font-size: 18px; margin-bottom: 2px; }
     </style>
 </head>
 <body>
+
     <div class="header">
         <h1>Tanjirul Pay & Mine 🚀</h1>
         <div class="balance" id="score">0 TPZ</div>
     </div>
+
+    <!-- Universal TON Wallet Connect Button (Supports all Ton wallets) -->
     <div id="ton-connect"></div>
-    <div class="card">
-        <h3>📋 Daily Tasks</h3>
-        <p>Complete tasks to earn extra tokens.</p>
+
+    <!-- HOME SECTION -->
+    <div id="home-section" class="section active">
+        <div class="card" style="justify-content: center; text-align: center; background: linear-gradient(135deg, #1e222d, #252b3b);">
+            <div>
+                <h3>⚡ Mining Active</h3>
+                <p>Tap below to boost your daily earnings.</p>
+                <button class="action-btn" style="margin-top: 10px; padding: 10px 20px;" onclick="alert('Mining claimed successfully!')">Claim TPZ</button>
+            </div>
+        </div>
     </div>
-    <div class="card">
-        <h3>👥 Invite Friends</h3>
-        <p>Share your referral link and earn bonuses.</p>
+
+    <!-- TASKS SECTION -->
+    <div id="tasks-section" class="section">
+        <h3 style="text-align: left; font-size: 16px; margin-bottom: 10px;">📋 Social & Daily Tasks</h3>
+        
+        <div class="card">
+            <div class="card-info">
+                <h3>Join Telegram Channel</h3>
+                <p>Reward: +500 TPZ</p>
+            </div>
+            <button class="action-btn" onclick="window.open('https://t.me/YourChannelLink', '_blank')">Start</button>
+        </div>
+
+        <div class="card">
+            <div class="card-info">
+                <h3>Follow on Twitter (X)</h3>
+                <p>Reward: +300 TPZ</p>
+            </div>
+            <button class="action-btn" onclick="window.open('https://twitter.com/YourProfile', '_blank')">Follow</button>
+        </div>
+
+        <div class="card">
+            <div class="card-info">
+                <h3>Daily Check-in</h3>
+                <p>Reward: +100 TPZ</p>
+            </div>
+            <button class="action-btn" onclick="alert('Checked in successfully!')">Claim</button>
+        </div>
     </div>
+
+    <!-- FRIENDS SECTION -->
+    <div id="friends-section" class="section">
+        <h3 style="text-align: left; font-size: 16px; margin-bottom: 10px;">👥 Invite Friends</h3>
+        <div class="card" style="flex-direction: column; align-items: flex-start;">
+            <h3>Referral Link</h3>
+            <p style="word-break: break-all; margin: 8px 0; color: #fff;">t.me/TanjirulMineBot/tanjirul_pay?start=ref12345</p>
+            <button class="action-btn" style="width: 100%; padding: 10px;" onclick="alert('Referral link copied!')">Copy Invite Link</button>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAVIGATION BAR -->
+    <div class="nav-bar">
+        <button class="nav-item active" onclick="switchTab('home', this)">
+            <span>🏠</span>Home
+        </button>
+        <button class="nav-item" onclick="switchTab('tasks', this)">
+            <span>📋</span>Tasks
+        </button>
+        <button class="nav-item" onclick="switchTab('friends', this)">
+            <span>👥</span>Friends
+        </button>
+    </div>
+
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand(); 
+
+        // Initializing TonConnect UI with universal support for all wallets
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-            manifestUrl: 'https://raw.githubusercontent.com/ton-community/ton-connect/main/tonconnect-manifest.json',
+            manifestUrl: 'https://rahimraj5373-del.github.io/tanjirul-app/tonconnect-manifest.json',
             buttonRootId: 'ton-connect'
         });
+
+        // Tab Switching Logic
+        function switchTab(tabName, element) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+
+            if(tabName === 'home') {
+                document.getElementById('home-section').classList.add('active');
+            } else if(tabName === 'tasks') {
+                document.getElementById('tasks-section').classList.add('active');
+            } else if(tabName === 'friends') {
+                document.getElementById('friends-section').classList.add('active');
+            }
+            element.classList.add('active');
+        }
     </script>
 </body>
-</html>
+    </html>
+    
