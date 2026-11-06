@@ -5,82 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tanjirul Pay & Mine</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <style>
-        :root {
-            --bg-color: #0c0f1d;
-            --card-bg: rgba(26, 31, 56, 0.7);
-            --accent-green: #00ff88;
-            --accent-blue: #3b82f6;
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-        }
-        body { 
-            background: linear-gradient(135deg, #0c0f1d 0%, #161b33 100%); 
-            color: var(--text-main); 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            text-align: center; 
-            padding: 15px; 
-            margin: 0; 
-            padding-bottom: 90px; 
-            min-height: 100vh;
-        }
-        .header { 
-            margin-top: 15px; 
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
+        body {
+            background-color: #0f172a;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            text-align: center;
             padding: 20px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            margin: 0;
         }
-        h1 { font-size: 22px; margin-bottom: 5px; background: linear-gradient(45deg, #00ff88, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .balance { font-size: 36px; font-weight: bold; color: var(--accent-green); margin: 10px 0; text-shadow: 0 0 20px rgba(0,255,136,0.3); }
-        .section { display: none; animation: fadeIn 0.4s ease-in-out; }
-        .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .card { 
-            background: var(--card-bg); 
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 16px; 
-            border-radius: 16px; 
-            margin: 14px 0; 
-            text-align: left; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding-top: 30px;
         }
-        .card-info h3 { margin: 0 0 4px 0; font-size: 16px; color: #fff; }
-        .card-info p { margin: 0; color: var(--text-muted); font-size: 12px; }
-        
-        .action-btn { 
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); 
-            color: white; 
-            border: none; 
-            padding: 8px 16px; 
-            border-radius: 10px; 
-            cursor: pointer; 
-            font-size: 12px; 
-            font-weight: bold; 
-            box-shadow: 0 4px 15px rgba(59,130,246,0.4);
+        .logo {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #38bdf8;
+        }
+        .balance-card {
+            background: #1e293b;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .balance {
+            font-size: 36px;
+            font-weight: bold;
+            color: #facc15;
+        }
+        .mine-btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
             transition: 0.2s;
+            width: 100%;
         }
-        .action-btn:active { transform: scale(0.95); }
-        .action-btn.claimed { background: #374151; color: #9ca3af; box-shadow: none; cursor: not-allowed; }
+        .mine-btn:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
 
-        /* Streak Grid UI */
-        .streak-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin: 15px 0;
+    <div class="container">
+        <div class="logo">⚡</div>
+        <h1>Tanjirul Pay & Mine</h1>
+        <p>Tap the button below to mine TPZ tokens!</p>
+
+        <div class="balance-card">
+            <p style="margin: 0; color: #94a3b8;">Your Balance</p>
+            <div class="balance" id="balance">0.00 TPZ</div>
+        </div>
+
+        <button class="mine-btn" onclick="mineToken()">⛏️ TAP TO MINE</button>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        let score = 0;
+        function mineToken() {
+            score += 1;
+            document.getElementById('balance').innerText = score.toFixed(2) + ' TPZ';
+            
+            // Haptic feedback if available
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('medium');
+            }
         }
-        .streak-box {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding
-        
+    </script>
+
+</body>
+</html>
