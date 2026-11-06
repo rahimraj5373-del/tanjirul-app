@@ -9,32 +9,80 @@
         body {
             background-color: #070913;
             color: #ffffff;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 15px;
-            padding-bottom: 80px;
+            padding-bottom: 95px;
         }
         .container {
             max-width: 480px;
             margin: 0 auto;
         }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #131b2e;
+            padding: 12px 15px;
+            border-radius: 14px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(250, 204, 21, 0.3);
+        }
         .card {
             background: #131b2e;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 12px;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .balance-box {
+            text-align: center;
+            background: linear-gradient(135deg, #1e1b4b, #0f172a);
+            border-radius: 16px;
+            padding: 22px;
             border: 1px solid #facc15;
+            margin-bottom: 15px;
         }
         .btn {
-            background: #facc15;
+            background: linear-gradient(135deg, #facc15, #ca8a04);
             color: #000;
             border: none;
             padding: 12px;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: bold;
             width: 100%;
             cursor: pointer;
             font-size: 14px;
+            margin-top: 10px;
+        }
+        .btn-sm {
+            background: #38bdf8;
+            color: #070913;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .streak-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .streak-box {
+            background: #111827;
+            border-radius: 10px;
+            padding: 12px 5px;
+            text-align: center;
+            border: 1px solid #374151;
+            font-size: 12px;
+        }
+        .streak-box.claimed {
+            border-color: #22c55e;
+            color: #22c55e;
+            background: rgba(34, 197, 94, 0.15);
         }
         .nav-bar {
             position: fixed;
@@ -45,27 +93,273 @@
             display: flex;
             justify-content: space-around;
             padding: 10px 0;
-            border-top: 1px solid #374151;
+            border-top: 1px solid rgba(250, 204, 21, 0.2);
             max-width: 480px;
             margin: 0 auto;
+            z-index: 1000;
         }
         .nav-item {
             background: none;
             border: none;
             color: #94a3b8;
-            font-size: 12px;
+            font-size: 11px;
             cursor: pointer;
+            text-align: center;
         }
         .nav-item.active {
             color: #facc15;
             font-weight: bold;
         }
-        .tab { display: none; }
-        .tab.active { display: block; }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Home
+        <!-- 1. HOME TAB -->
+        <div id="tab-home" class="tab-content active">
+            <div class="header">
+                <div>
+                    <strong id="username-display" style="font-size: 15px; color: #facc15;">Tanjirul King</strong>
+                    <div style="font-size: 11px; color: #94a3b8;">👑 Gold Member</div>
+                </div>
+                <div>⚙️</div>
+            </div>
+
+            <div class="balance-box">
+                <span style="font-size: 12px; color: #94a3b8;">Total TPZ Balance</span>
+                <h1 id="balance" style="color: #facc15; margin: 8px 0; font-size: 34px;">0.00 TPZ</h1>
+                <span style="font-size: 11px; color: #22c55e;">🟢 Account Active</span>
+            </div>
+
+            <div class="card">
+                <h3 style="color: #38bdf8; margin-top: 0;">🚀 Welcome to Tanjirul Pay</h3>
+                <p style="font-size: 12px; color: #94a3b8; line-height: 1.4;">Complete social tasks, invite friends with your referral link, and claim daily streak rewards effortlessly.</p>
+                <button class="btn-sm" onclick="switchTab('tab-tasks', document.querySelectorAll('.nav-item')[1])">Explore Tasks ➔</button>
+            </div>
+        </div>
+
+        <!-- 2. TASKS TAB -->
+        <div id="tab-tasks" class="tab-content">
+            <h2 style="font-size: 18px; color: #facc15;">Daily Tasks & Socials</h2>
+            <p style="font-size: 12px; color: #94a3b8;">Complete tasks to earn TPZ tokens:</p>
+            
+            <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>📢 Join Telegram Channel</strong>
+                    <div style="font-size: 11px; color: #facc15; margin-top: 3px;">+50.00 TPZ</div>
+                </div>
+                <button class="btn-sm" id="task-btn-tg" onclick="handleTask('tg', 'https://t.me/tanjirul0123')">Start</button>
+            </div>
+
+            <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>🌐 Follow on Twitter (X)</strong>
+                    <div style="font-size: 11px; color: #facc15; margin-top: 3px;">+30.00 TPZ</div>
+                </div>
+                <button class="btn-sm" id="task-btn-tw" onclick="handleTask('tw', 'https://x.com/tanjirul_king')">Start</button>
+            </div>
+
+            <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>👥 Follow Facebook Page</strong>
+                    <div style="font-size: 11px; color: #facc15; margin-top: 3px;">+30.00 TPZ</div>
+                </div>
+                <button class="btn-sm" id="task-btn-fb" onclick="handleTask('fb', 'https://www.facebook.com/share/1Qi2SaUBck/')">Start</button>
+            </div>
+        </div>
+
+        <!-- 3. REFERRAL TAB -->
+        <div id="tab-referral" class="tab-content">
+            <h2 style="font-size: 18px; text-align: center; color: #facc15;">Referral Program</h2>
+            <p style="text-align: center; font-size: 12px; color: #94a3b8;">Invite friends and earn 50 TPZ per referral!</p>
+            
+            <div class="card">
+                <p style="font-size: 12px; color: #94a3b8;">Your Referral Link:</p>
+                <div id="ref-link" style="font-size: 11px; color: #facc15; word-break: break-all; background: #070913; padding: 12px; border-radius: 8px; margin-bottom: 12px; border: 1px solid rgba(250,204,21,0.2);">Loading...</div>
+                <button class="btn" onclick="copyRef()">Copy Link</button>
+            </div>
+        </div>
+
+        <!-- 4. COMBO TAB -->
+        <div id="tab-combo" class="tab-content">
+            <h2 style="font-size: 18px; text-align: center; color: #facc15;">7 Days Combo Streak</h2>
+            <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 12px;">Login daily for progressive rewards!</p>
+            
+            <div class="streak-grid" id="streak-container"></div>
+            <button class="btn" onclick="claimStreak()">Claim Today's Reward</button>
+        </div>
+
+        <!-- 5. WALLET / MY TAB -->
+        <div id="tab-wallet" class="tab-content">
+            <h2 style="font-size: 18px; color: #facc15;">My Account & Wallet</h2>
+            <div class="card">
+                <div id="profile-name" style="font-weight: bold; font-size: 15px;">Tanjirul King</div>
+                <div id="profile-id" style="font-size: 11px; color: #94a3b8; margin-bottom: 10px;">@tanjirul_user</div>
+                <hr style="border: 0; border-top: 1px solid #374151; margin: 10px 0;">
+                <div style="display: flex; justify-content: space-between; font-size: 13px;">
+                    <span>Wallet Status:</span>
+                    <span id="wallet-status" style="color: #ef4444; font-weight: bold;">Not Connected</span>
+                </div>
+            </div>
+            <div class="card">
+                <div style="font-weight: bold; margin-bottom: 8px; font-size: 13px; color: #facc15;">Connect TON Wallet</div>
+                <input type="text" id="wallet-input" placeholder="EQ... or UQ..." style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #374151; background: #070913; color: white; box-sizing: border-box; font-size: 12px; margin-bottom: 10px; outline: none;">
+                <button class="btn" id="wallet-btn" onclick="toggleWallet()">Connect Wallet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <div class="nav-bar">
+        <button class="nav-item active" onclick="switchTab('tab-home', this)">🏠<br>Home</button>
+        <button class="nav-item" onclick="switchTab('tab-tasks', this)">📋<br>Tasks</button>
+        <button class="nav-item" onclick="switchTab('tab-referral', this)">👥<br>Referral</button>
+        <button class="nav-item" onclick="switchTab('tab-combo', this)">📅<br>Combo</button>
+        <button class="nav-item" onclick="switchTab('tab-wallet', this)">👤<br>My & Wallet</button>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        try { tg.expand(); } catch(e) {}
+
+        let userId = tg.initDataUnsafe?.user?.id || 'tanjirul_user';
+        let firstName = tg.initDataUnsafe?.user?.first_name || 'Tanjirul';
+        let username = tg.initDataUnsafe?.user?.username || 'tanjirul_user';
+
+        document.getElementById('username-display').innerText = firstName;
+        document.getElementById('profile-name').innerText = firstName;
+        document.getElementById('profile-id').innerText = '@' + username;
+
+        let balance = parseFloat(localStorage.getItem('tpz_bal_' + userId)) || 0.00;
+        
+        function updateBal() {
+            document.getElementById('balance').innerText = balance.toFixed(2) + ' TPZ';
+            localStorage.setItem('tpz_bal_' + userId, balance);
+        }
+        updateBal();
+
+        let refUrl = "https://t.me/TanjirulMineBot?start=ref_" + userId;
+        document.getElementById('ref-link').innerText = refUrl;
+
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            if (btn) btn.classList.add('active');
+        }
+
+        // Streak Logic
+        let streakDay = parseInt(localStorage.getItem('streak_' + userId)) || 0;
+        let lastDate = localStorage.getItem('date_' + userId) || '';
+        let today = new Date().toDateString();
+        let rewards = [10, 20, 35, 50, 75, 100, 250];
+
+        function renderStreak() {
+            let box = document.getElementById('streak-container');
+            box.innerHTML = '';
+            for (let i = 1; i <= 7; i++) {
+                let claimed = i <= streakDay;
+                box.innerHTML += `<div class="streak-box ${claimed ? 'claimed' : ''}">Day ${i}<br><strong style="color:#facc15;">+${rewards[i-1]}</strong></div>`;
+            }
+        }
+        renderStreak();
+
+        function claimStreak() {
+            if (lastDate === today) {
+                alert("Already claimed today!");
+                return;
+            }
+            if (streakDay >= 7) streakDay = 0;
+            let amt = rewards[streakDay];
+            streakDay++;
+            balance += amt;
+            lastDate = today;
+            localStorage.setItem('streak_' + userId, streakDay);
+            localStorage.setItem('date_' + userId, today);
+            updateBal();
+            renderStreak();
+            alert("Claimed +" + amt + " TPZ!");
+        }
+
+        // Tasks Logic
+        let taskRew = { tg: 50, tw: 30, fb: 30 };
+        function handleTask(id, url) {
+            let status = localStorage.getItem('task_' + id + '_' + userId) || 'no';
+            let btn = document.getElementById('task-btn-' + id);
+            if (status === 'no') {
+                window.open(url, '_blank');
+                localStorage.setItem('task_' + id + '_' + userId, 'visited');
+                btn.innerText = 'Verify';
+            } else if (status === 'visited') {
+                localStorage.setItem('task_' + id + '_' + userId, 'done');
+                balance += taskRew[id];
+                updateBal();
+                btn.innerText = 'Claimed';
+                btn.disabled = true;
+                alert("Verified! Added +" + taskRew[id] + " TPZ");
+            }
+        }
+
+        ['tg', 'tw', 'fb'].forEach(id => {
+            let status = localStorage.getItem('task_' + id + '_' + userId);
+            let btn = document.getElementById('task-btn-' + id);
+            if (status === 'visited') btn.innerText = 'Verify';
+            if (status === 'done') { btn.innerText = 'Claimed'; btn.disabled = true; }
+        });
+
+        function copyRef() {
+            navigator.clipboard.writeText(refUrl);
+            alert("Referral link copied!");
+        }
+
+        // Wallet Logic
+        let savedW = localStorage.getItem('wallet_' + userId);
+        let wBtn = document.getElementById('wallet-btn');
+        let wStat = document.getElementById('wallet-status');
+        let wBox = document.getElementById('wallet-input');
+
+        function updateW() {
+            if (savedW) {
+                wStat.innerText = "Connected (" + savedW.slice(0,6) + "...)";
+                wStat.style.color = "#22c55e";
+                wBox.style.display = 'none';
+                wBtn.innerText = "Disconnect Wallet";
+                wBtn.style.background = "#ef4444";
+                wBtn.style.color = "#fff";
+            } else {
+                wStat.innerText = "Not Connected";
+                wStat.style.color = "#ef4444";
+                wBox.style.display = 'block';
+                wBox.value = '';
+                wBtn.innerText = "Connect Wallet";
+                wBtn.style.background = "linear-gradient(135deg, #facc15, #ca8a04)";
+                wBtn.style.color = "#000";
+            }
+        }
+        updateW();
+
+        function toggleWallet() {
+            if (!savedW) {
+                let val = wBox.value.trim();
+                if (val.length < 5) { alert("Enter valid address!"); return; }
+                savedW = val;
+                localStorage.setItem('wallet_' + userId, savedW);
+                updateW();
+                alert("Wallet connected!");
+            } else {
+                savedW = null;
+                localStorage.removeItem('wallet_' + userId);
+                updateW();
+                alert("Wallet disconnected!");
+            }
+        }
+    </script>
+</body>
+                        </html>
     
