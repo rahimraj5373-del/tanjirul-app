@@ -140,7 +140,7 @@
             <div class="card">
                 <h3 style="color: #38bdf8; margin-top: 0;">🚀 Welcome to Tanjirul Pay</h3>
                 <p style="font-size: 12px; color: #94a3b8; line-height: 1.4;">Complete social tasks, invite friends with your referral link, and claim daily streak rewards effortlessly.</p>
-                <button class="btn-sm" onclick="switchTab('tab-tasks', document.querySelectorAll('.nav-item')[1])">Explore Tasks ➔</button>
+                <button class="btn-sm" onclick="switchTab('tab-tasks')">Explore Tasks ➔</button>
             </div>
         </div>
 
@@ -247,11 +247,15 @@
         let refUrl = "https://t.me/TanjirulMineBot?start=ref_" + userId;
         document.getElementById('ref-link').innerText = refUrl;
 
-        function switchTab(tabId, btn) {
+        function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            if (btn) btn.classList.add('active');
+            
+            let map = { 'tab-home': 0, 'tab-tasks': 1, 'tab-referral': 2, 'tab-combo': 3, 'tab-wallet': 4 };
+            let idx = map[tabId];
+            let navBtns = document.querySelectorAll('.nav-item');
+            if (navBtns[idx]) navBtns[idx].classList.add('active');
         }
 
         // Streak Logic
@@ -287,11 +291,12 @@
             alert("Claimed +" + amt + " TPZ!");
         }
 
-        // Tasks Logic
+        // Tasks Logic (Fixed)
         let taskRew = { tg: 50, tw: 30, fb: 30 };
         function handleTask(id, url) {
             let status = localStorage.getItem('task_' + id + '_' + userId) || 'no';
             let btn = document.getElementById('task-btn-' + id);
+            
             if (status === 'no') {
                 window.open(url, '_blank');
                 localStorage.setItem('task_' + id + '_' + userId, 'visited');
@@ -306,11 +311,15 @@
             }
         }
 
+        // Restore task states on load
         ['tg', 'tw', 'fb'].forEach(id => {
             let status = localStorage.getItem('task_' + id + '_' + userId);
             let btn = document.getElementById('task-btn-' + id);
             if (status === 'visited') btn.innerText = 'Verify';
-            if (status === 'done') { btn.innerText = 'Claimed'; btn.disabled = true; }
+            if (status === 'done') { 
+                btn.innerText = 'Claimed'; 
+                btn.disabled = true; 
+            }
         });
 
         function copyRef() {
@@ -361,5 +370,5 @@
         }
     </script>
 </body>
-                        </html>
+    </html>
     
