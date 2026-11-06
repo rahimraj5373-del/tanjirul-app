@@ -257,5 +257,136 @@
 
         let balance = parseFloat(localStorage.getItem('tpz_bal_' + userId)) || 0.00;
         
-        function
+        function updateBal() {
+            document.getElementById('balance').innerText = balance.toFixed(2) + ' TPZ';
+            localStorage.setItem('tpz_bal_' + userId, balance);
+        }
+        updateBal();
+
+        let refUrl = "https://t.me/TanjirulMineBot?start=ref_" + userId;
+        document.getElementById('ref-link').innerText = refUrl;
+
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            if (!btn) {
+                let map = { 'tab-home': 0, 'tab-tasks': 1, 'tab-referral': 2, 'tab-combo': 3, 'tab-wallet': 4 };
+                let idx = map[tabId];
+                let items = document.querySelectorAll('.nav-item');
+                if (items[idx]) items[idx].classList.add('active');
+            } else {
+                btn.classList.add('active');
+            }
+        }
+
+        // Streak
+        let streakDay = parseInt(localStorage.getItem('streak_' + userId)) || 0;
+        let lastDate = localStorage.getItem('date_' + userId) || '';
+        let today = new Date().toDateString();
+        let rewards = [10, 20, 35, 50, 75, 100, 250];
+
+        function renderStreak() {
+            let box = document.getElementById('streak-container');
+            box.innerHTML = '';
+            for (let i = 1; i <= 7; i++) {
+                let claimed = i <= streakDay;
+                box.innerHTML += `<div class="streak-box ${claimed ? 'claimed' : ''}">Day ${i}<br><strong style="color:#facc15;">+${rewards[i-1]}</strong></div>`;
+            }
+        }
+        renderStreak();
+
+        function claimStreak() {
+            if (lastDate === today) {
+                alert("Already claimed today!");
+                return;
+            }
+            if (streakDay >= 7) streakDay = 0;
+            let amt = rewards[streakDay];
+            streakDay++;
+            balance += amt;
+            lastDate = today;
+            localStorage.setItem('streak_' + userId, streakDay);
+            localStorage.setItem('date_' + userId, today);
+            updateBal();
+            renderStreak();
+            alert("Claimed +" + amt + " TPZ!");
+        }
+
+        // Tasks
+        let taskRew = { tg: 50, tw: 30, fb: 30 };
+        function handleTask(id, url) {
+            let status = localStorage.getItem('task_' + id + '_' + userId) || 'no';
+            let btn = document.getElementById('task-btn-' + id);
+            if (status === 'no') {
+                window.open(url, '_blank');
+                localStorage.setItem('task_' + id + '_' + userId, 'visited');
+                btn.innerText = 'Verify';
+            } else if (status === 'visited') {
+                localStorage.setItem('task_' + id + '_' + userId, 'done');
+                balance += taskRew[id];
+                updateBal();
+                btn.innerText = 'Claimed';
+                btn.disabled = true;
+                alert("Verified! Added +" + taskRew[id] + " TPZ");
+            }
+        }
+
+        ['tg', 'tw', 'fb'].forEach(id => {
+            let status = localStorage.getItem('task_' + id + '_' + userId);
+            let btn = document.getElementById('task-btn-' + id);
+            if (status === 'visited') btn.innerText = 'Verify';
+            if (status === 'done') { btn.innerText = 'Claimed'; btn.disabled = true; }
+        });
+
+        function copyRef() {
+            navigator.clipboard.writeText(refUrl);
+            alert("Referral link copied!");
+        }
+
+        // Wallet
+        let savedW = localStorage.getItem('wallet_' + userId);
+        let wBtn = document.getElementById('wallet-btn');
+        let wStat = document.getElementById('wallet-status');
+        let wBox = document.getElementById('wallet-input');
+
+        function updateW() {
+            if (savedW) {
+                wStat.innerText = "Connected (" + savedW.slice(0,6) + "...)";
+                wStat.style.color = "#22c55e";
+                wBox.style.display = 'none';
+                wBtn.innerText = "Disconnect Wallet";
+                wBtn.style.background = "#ef4444";
+                wBtn.style.color = "#fff";
+            } else {
+                wStat.innerText = "Not Connected";
+                wStat.style.color = "#ef4444";
+                wBox.style.display = 'block';
+                wBox.value = '';
+                wBtn.innerText = "Connect Wallet";
+                wBtn.style.background = "linear-gradient(135deg, #facc15, #ca8a04)";
+                wBtn.style.color = "#000";
+            }
+        }
+        updateW();
+
+        function toggleWallet() {
+            if (!savedW) {
+                let val = wBox.value.trim();
+                if (val.length < 5) { alert("Enter valid address!"); return; }
+                savedW = val;
+                localStorage.setItem('wallet_' + userId, savedW);
+                updateW();
+                alert("Wallet connected!");
+            } else {
+                savedW = null;
+                localStorage.removeItem('wallet_' + userId);
+                updateW();
+                alert("Wallet disconnected!");
+            }
+        }
+    </script>
+</body>
+                    </html>
                     
