@@ -6,40 +6,23 @@
     <title>Tanjirul Pay & Mine</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root {
-            --bg-color: #070913;
-            --card-bg: linear-gradient(135deg, #131b2e, #0b111e);
-            --accent-gold: #facc15;
-            --accent-blue: #38bdf8;
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-            --success: #22c55e;
-            --danger: #ef4444;
-        }
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            background-color: #070913;
+            color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 15px;
             padding-bottom: 90px;
         }
         .container {
             max-width: 480px;
             margin: 0 auto;
-            padding: 20px;
-            box-sizing: border-box;
         }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-        }
-        .profile-badge {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            margin-bottom: 15px;
         }
         .avatar {
             width: 45px;
@@ -49,26 +32,96 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             color: #000;
-            border: 2px solid #facc15;
         }
         .balance-card {
-            background: var(--card-bg);
+            background: linear-gradient(135deg, #131b2e, #0b111e);
             border-radius: 20px;
-            padding: 25px;
+            padding: 20px;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             border: 1px solid rgba(250, 204, 21, 0.3);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         .balance-amount {
-            font-size: 38px;
+            font-size: 34px;
             font-weight: bold;
-            color: var(--accent-gold);
-            margin: 10px 0;
-            text-shadow: 0 0 15px rgba(250, 204, 21, 0.4);
+            color: #facc15;
+            margin: 8px 0;
+        }
+        .card {
+            background: linear-gradient(135deg, #131b2e, #0b111e);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, #facc15, #ca8a04);
+            color: #000;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-sm {
+            background: #38bdf8;
+            color: #070913;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .streak-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .streak-box {
+            background: #111827;
+            border-radius: 10px;
+            padding: 10px 5px;
+            text-align: center;
+            border: 1px solid #374151;
+            font-size: 12px;
+        }
+        .streak-box.claimed {
+            border-color: #22c55e;
+            color: #22c55e;
+            background: rgba(34, 197, 94, 0.15);
+        }
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #0b111e;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-top: 1px solid rgba(250, 204, 21, 0.2);
+            max-width: 480px;
+            margin: 0 auto;
+            z-index: 1000;
+        }
+        .nav-item {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 11px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .nav-item.active {
+            color: #facc15;
+            font-weight: bold;
         }
         .tab-content {
             display: none;
@@ -76,11 +129,133 @@
         .tab-content.active {
             display: block;
         }
-        /* Stylish Glowing Banner for Home */
-        .banner-card {
-            background: linear-gradient(135deg, #1e1b4b, #0f172a);
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            border: 1px solid rgba(56, 189, 248, 0.4
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 1. HOME TAB -->
+        <div id="tab-home" class="tab-content active">
+            <div class="header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="avatar" id="user-initial">TP</div>
+                    <div>
+                        <div style="font-weight: bold; font-size: 14px;" id="username-display">Tanjirul King</div>
+                        <div style="font-size: 11px; color: #facc15;">👑 Gold Member</div>
+                    </div>
+                </div>
+                <div>⚙️</div>
+            </div>
+
+            <div class="balance-card">
+                <span style="color: #94a3b8; font-size: 12px;">Total TPZ Balance</span>
+                <div class="balance-amount" id="balance">0.00 TPZ</div>
+                <span style="font-size: 11px; color: #22c55e;">🟢 Account Active</span>
+            </div>
+
+            <div class="card" style="background: linear-gradient(135deg, #1e1b4b, #0f172a); border-color: #38bdf8;">
+                <h3 style="color: #38bdf8; margin-top: 0;">🚀 Welcome to Tanjirul Pay</h3>
+                <p style="color: #94a3b8; font-size: 12px;">Complete tasks, invite friends, and claim daily streak rewards easily.</p>
+                <button class="btn-sm" onclick="switchTab('tab-tasks')">Explore Tasks ➔</button>
+            </div>
+        </div>
+
+        <!-- 2. TASKS TAB -->
+        <div id="tab-tasks" class="tab-content">
+            <h2>Daily Tasks & Socials</h2>
+            <p style="color: #94a3b8; font-size: 12px;">Complete tasks to earn TPZ:</p>
+            
+            <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>📢 Join Telegram Channel</strong>
+                    <div style="font-size: 11px; color: #facc15;">+50.00 TPZ</div>
+                </div>
+                <button class="btn-sm" id="task-btn-tg" onclick="handleTask('tg', 'https://t.me/tanjirul0123')">Start</button>
+            </div>
+
+            <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>🌐 Follow on Twitter (X)</strong>
+                    <div style="font-size: 11px; color: #facc15;">+30.00 TPZ</div>
+                </div>
+                <button class="btn-sm" id="task-btn-tw" onclick="handleTask('tw', 'https://x.com/tanjirul_king')">Start</button>
+            </div>
+
+            <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong>👥 Follow Facebook Page</strong>
+                    <div style="font-size: 11px; color: #facc15;">+30.00 TPZ</div>
+                </div>
+                <button class="btn-sm" id="task-btn-fb" onclick="handleTask('fb', 'https://www.facebook.com/share/1Qi2SaUBck/')">Start</button>
+            </div>
+        </div>
+
+        <!-- 3. REFERRAL TAB -->
+        <div id="tab-referral" class="tab-content">
+            <h2 style="text-align: center;">Referral Program</h2>
+            <p style="text-align: center; color: #94a3b8; font-size: 12px;">Invite friends and earn 50 TPZ per referral!</p>
+            
+            <div class="balance-card" style="text-align: left;">
+                <div style="font-size: 12px; color: #94a3b8;">Your Referral Link:</div>
+                <div id="ref-link" style="font-size: 11px; color: #facc15; word-break: break-all; margin: 8px 0; background: #070913; padding: 10px; border-radius: 8px;">Loading...</div>
+                <button class="btn-gold" style="margin-top: 10px;" onclick="copyRef()">Copy Link</button>
+            </div>
+        </div>
+
+        <!-- 4. COMBO TAB -->
+        <div id="tab-combo" class="tab-content">
+            <h2 style="text-align: center;">7 Days Combo Streak</h2>
+            <p style="text-align: center; color: #94a3b8; font-size: 12px;">Login daily for progressive rewards!</p>
+            
+            <div class="streak-grid" id="streak-container"></div>
+            <button class="btn-gold" onclick="claimStreak()">Claim Today's Reward</button>
+        </div>
+
+        <!-- 5. WALLET / MY TAB -->
+        <div id="tab-wallet" class="tab-content">
+            <h2>My Account & Wallet</h2>
+            
+            <div class="card">
+                <div style="font-weight: bold; font-size: 15px;" id="profile-name">Tanjirul King</div>
+                <div style="font-size: 11px; color: #94a3b8; margin-bottom: 10px;" id="profile-id">@tanjirul_user</div>
+                <hr style="border: 0; border-top: 1px solid #374151; margin: 10px 0;">
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Wallet Status:</span>
+                    <span id="wallet-status" style="color: #ef4444; font-weight: bold;">Not Connected</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="font-weight: bold; margin-bottom: 8px; font-size: 13px;">Connect TON Wallet</div>
+                <input type="text" id="wallet-input" placeholder="EQ... or UQ..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #374151; background: #070913; color: white; box-sizing: border-box; font-size: 12px; margin-bottom: 10px; outline: none;">
+                <button class="btn-gold" id="wallet-btn" onclick="toggleWallet()">Connect Wallet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <div class="nav-bar">
+        <button class="nav-item active" onclick="switchTab('tab-home', this)">🏠<br>Home</button>
+        <button class="nav-item" onclick="switchTab('tab-tasks', this)">📋<br>Tasks</button>
+        <button class="nav-item" onclick="switchTab('tab-referral', this)">👥<br>Referral</button>
+        <button class="nav-item" onclick="switchTab('tab-combo', this)">📅<br>Combo</button>
+        <button class="nav-item" onclick="switchTab('tab-wallet', this)">👤<br>My & Wallet</button>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        try { tg.expand(); } catch(e) {}
+
+        let userId = tg.initDataUnsafe?.user?.id || 'tanjirul_user';
+        let firstName = tg.initDataUnsafe?.user?.first_name || 'Tanjirul';
+        let username = tg.initDataUnsafe?.user?.username || 'tanjirul_user';
+
+        document.getElementById('username-display').innerText = firstName;
+        document.getElementById('profile-name').innerText = firstName;
+        document.getElementById('profile-id').innerText = '@' + username;
+        document.getElementById('user-initial').innerText = firstName.charAt(0);
+
+        let balance = parseFloat(localStorage.getItem('tpz_bal_' + userId)) || 0.00;
         
+        function
+                    
