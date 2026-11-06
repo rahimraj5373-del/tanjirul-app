@@ -27,29 +27,29 @@
         .container {
             max-width: 480px;
             margin: 0 auto;
-            padding: 15px;
+            padding: 20px;
             box-sizing: border-box;
         }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         .profile-badge {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
         .avatar {
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             background: linear-gradient(135deg, #facc15, #ca8a04);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
             color: #000;
             border: 2px solid #facc15;
@@ -57,17 +57,17 @@
         .balance-card {
             background: var(--card-bg);
             border-radius: 20px;
-            padding: 20px;
+            padding: 25px;
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             border: 1px solid rgba(250, 204, 21, 0.3);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         .balance-amount {
-            font-size: 34px;
+            font-size: 38px;
             font-weight: bold;
             color: var(--accent-gold);
-            margin: 8px 0;
+            margin: 10px 0;
             text-shadow: 0 0 15px rgba(250, 204, 21, 0.4);
         }
         .tab-content {
@@ -78,60 +78,60 @@
         }
         .grid-menu {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 15px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
         }
         .menu-card {
             background: var(--card-bg);
             border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 15px;
-            padding: 15px 10px;
+            border-radius: 18px;
+            padding: 20px 15px;
             text-align: center;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
             transition: 0.2s;
         }
         .menu-card:active {
-            transform: scale(0.95);
+            transform: scale(0.96);
         }
         .menu-icon {
-            font-size: 24px;
-            margin-bottom: 6px;
+            font-size: 32px;
+            margin-bottom: 8px;
         }
         .menu-title {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 600;
         }
         .card {
             background: var(--card-bg);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 12px;
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 15px;
             border: 1px solid rgba(255,255,255,0.08);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
         }
         .btn-gold {
             background: linear-gradient(135deg, #facc15, #ca8a04);
             color: #000;
             border: none;
-            padding: 12px 20px;
-            border-radius: 12px;
+            padding: 14px 20px;
+            border-radius: 14px;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
-            font-size: 14px;
-            box-shadow: 0 4px 12px rgba(250, 204, 21, 0.3);
+            font-size: 15px;
+            box-shadow: 0 4px 15px rgba(250, 204, 21, 0.3);
         }
         .btn-sm {
             background: var(--accent-blue);
             color: #070913;
             border: none;
-            padding: 8px 14px;
-            border-radius: 8px;
+            padding: 10px 16px;
+            border-radius: 10px;
             font-weight: bold;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 13px;
         }
         .btn-sm:disabled {
             background: #334155;
@@ -141,21 +141,21 @@
         .streak-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-bottom: 15px;
+            gap: 10px;
+            margin-bottom: 20px;
         }
         .streak-box {
             background: #111827;
-            border-radius: 10px;
-            padding: 12px 5px;
+            border-radius: 12px;
+            padding: 15px 5px;
             text-align: center;
             border: 1px solid #374151;
-            font-size: 12px;
+            font-size: 13px;
         }
         .streak-box.claimed {
             border-color: var(--success);
             color: var(--success);
-            background: rgba(34, 197, 94, 0.1);
+            background: rgba(34, 197, 94, 0.15);
         }
         /* Fixed Bottom Navigation Bar */
         .nav-bar {
@@ -166,7 +166,7 @@
             background: #0b111e;
             display: flex;
             justify-content: space-around;
-            padding: 8px 0;
+            padding: 12px 0;
             border-top: 1px solid rgba(250, 204, 21, 0.2);
             max-width: 480px;
             margin: 0 auto;
@@ -176,7 +176,7 @@
             background: none;
             border: none;
             color: var(--text-muted);
-            font-size: 10px;
+            font-size: 12px;
             cursor: pointer;
             text-align: center;
         }
@@ -191,13 +191,13 @@
             transform: translateX(-50%);
             background: #1e293b;
             color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 13px;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 14px;
             display: none;
             z-index: 2000;
             border: 1px solid var(--accent-gold);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
         }
     </style>
 </head>
@@ -212,58 +212,255 @@
                 <div class="profile-badge">
                     <div class="avatar" id="user-initial">TP</div>
                     <div>
-                        <div style="font-weight: bold; font-size: 14px;" id="username-display">Tanjirul King</div>
-                        <div style="font-size: 11px; color: var(--accent-gold);">👑 Gold Member</div>
+                        <div style="font-weight: bold; font-size: 16px;" id="username-display">Tanjirul King</div>
+                        <div style="font-size: 12px; color: var(--accent-gold);">👑 Gold Member</div>
                     </div>
                 </div>
-                <div style="font-size: 18px; cursor: pointer;" onclick="showToast('Settings & notifications active')">⚙️</div>
+                <div style="font-size: 20px; cursor: pointer;" onclick="showToast('Settings active')">⚙️</div>
             </div>
 
             <div class="balance-card">
-                <span style="color: var(--text-muted); font-size: 12px;">Total TPZ Balance</span>
+                <span style="color: var(--text-muted); font-size: 13px;">Total TPZ Balance</span>
                 <div class="balance-amount" id="balance">0.00 TPZ</div>
-                <span style="font-size: 11px; color: var(--success);">🟢 Mining Active</span>
+                <span style="font-size: 12px; color: var(--success);">🟢 Account Active</span>
             </div>
 
             <div class="grid-menu">
-                <div class="menu-card" onclick="switchTab('tab-mining', document.querySelectorAll('.nav-item')[1])">
-                    <div class="menu-icon">⛏️</div>
-                    <div class="menu-title">Mining</div>
-                </div>
-                <div class="menu-card" onclick="switchTab('tab-tasks', document.querySelectorAll('.nav-item')[3])">
+                <div class="menu-card" onclick="switchTab('tab-tasks', document.querySelectorAll('.nav-item')[1])">
                     <div class="menu-icon">📋</div>
-                    <div class="menu-title">Tasks</div>
-                </div>
-                <div class="menu-card" onclick="switchTab('tab-combo', document.querySelectorAll('.nav-item')[4])">
-                    <div class="menu-icon">📅</div>
-                    <div class="menu-title">7D Combo</div>
+                    <div class="menu-title">Tasks & Social</div>
                 </div>
                 <div class="menu-card" onclick="switchTab('tab-referral', document.querySelectorAll('.nav-item')[2])">
                     <div class="menu-icon">👥</div>
                     <div class="menu-title">Referral</div>
                 </div>
-                <div class="menu-card" onclick="switchTab('tab-wallet', document.querySelectorAll('.nav-item')[5])">
+                <div class="menu-card" onclick="switchTab('tab-combo', document.querySelectorAll('.nav-item')[3])">
+                    <div class="menu-icon">📅</div>
+                    <div class="menu-title">7D Combo</div>
+                </div>
+                <div class="menu-card" onclick="switchTab('tab-wallet', document.querySelectorAll('.nav-item')[4])">
                     <div class="menu-icon">👛</div>
-                    <div class="menu-title">Wallet</div>
-                </div>
-                <div class="menu-card" onclick="showToast('More features coming soon!')">
-                    <div class="menu-icon">✨</div>
-                    <div class="menu-title">More</div>
-                </div>
-            </div>
-
-            <div class="card" style="background: linear-gradient(135deg, #1e1b4b, #0f172a); border-color: #38bdf8;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <div style="font-weight: bold; color: var(--accent-blue);">Start Mining Session</div>
-                        <div style="font-size: 11px; color: var(--text-muted);">Earn more TPZ tokens daily</div>
-                    </div>
-                    <button class="btn-sm" onclick="switchTab('tab-mining', document.querySelectorAll('.nav-item')[1])">Go ➔</button>
+                    <div class="menu-title">Wallet & My</div>
                 </div>
             </div>
         </div>
 
-        <!-- 2. MINING TAB -->
-        <div id="tab-mining" class="tab-content">
-            <h3
-    
+        <!-- 2. TASKS TAB -->
+        <div id="tab-tasks" class="tab-content">
+            <h2 style="margin-bottom: 5px;">Daily Tasks & Socials</h2>
+            <p style="color: var(--text-muted); font-size: 13px; margin-top: 0;">Complete tasks to earn TPZ tokens:</p>
+            
+            <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong style="font-size: 15px;">📢 Join Telegram Channel</strong>
+                    <div style="font-size: 12px; color: var(--accent-gold); margin-top: 3px;">+50.00 TPZ</div>
+                </div>
+                <button class="btn-sm" id="task-btn-tg" onclick="handleSocialTask('tg', 'https://t.me/tanjirul0123')">Start</button>
+            </div>
+
+            <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong style="font-size: 15px;">🌐 Follow on Twitter (X)</strong>
+                    <div style="font-size: 12px; color: var(--accent-gold); margin-top: 3px;">+30.00 TPZ</div>
+                </div>
+                <button class="btn-sm" id="task-btn-tw" onclick="handleSocialTask('tw', 'https://x.com/tanjirul_king')">Start</button>
+            </div>
+
+            <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong style="font-size: 15px;">👥 Follow Facebook Page</strong>
+                    <div style="font-size: 12px; color: var(--accent-gold); margin-top: 3px;">+30.00 TPZ</div>
+                </div>
+                <button class="btn-sm" id="task-btn-fb" onclick="handleSocialTask('fb', 'https://www.facebook.com/share/1Qi2SaUBck/')">Start</button>
+            </div>
+        </div>
+
+        <!-- 3. REFERRAL TAB -->
+        <div id="tab-referral" class="tab-content">
+            <h2 style="text-align: center; margin-bottom: 5px;">Referral Program</h2>
+            <p style="text-align: center; color: var(--text-muted); font-size: 13px; margin-top: 0;">Invite friends and earn 50 TPZ per referral!</p>
+            
+            <div class="balance-card" style="text-align: left;">
+                <div style="font-size: 13px; color: var(--text-muted);">Your Referral Link:</div>
+                <div id="ref-link" style="font-size: 12px; color: var(--accent-gold); word-break: break-all; margin: 10px 0; background: #070913; padding: 12px; border-radius: 10px;">Loading...</div>
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button class="btn-gold" style="flex: 1; padding: 12px;" onclick="copyRefLink()">📋 Copy Link</button>
+                    <button class="btn-sm" style="flex: 1; background: var(--success); color: white; padding: 12px;" onclick="shareRefLink()">↗️ Share</button>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="card" style="text-align: center;">
+                    <div style="font-size: 12px; color: var(--text-muted);">Total Invited</div>
+                    <div style="font-size: 22px; font-weight: bold; color: var(--accent-blue); margin-top: 5px;">0 Users</div>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <div style="font-size: 12px; color: var(--text-muted);">Total Earned</div>
+                    <div style="font-size: 22px; font-weight: bold; color: var(--accent-gold); margin-top: 5px;">0.00 TPZ</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. 7 DAYS COMBO TAB -->
+        <div id="tab-combo" class="tab-content">
+            <h2 style="text-align: center; margin-bottom: 5px;">7 Days Combo Streak</h2>
+            <p style="text-align: center; color: var(--text-muted); font-size: 13px; margin-top: 0;">Login daily for progressive big rewards!</p>
+            
+            <div class="streak-grid" id="streak-container"></div>
+            <button class="btn-gold" style="margin-top: 15px; padding: 14px;" onclick="claimDailyStreak()">Claim Today's Reward</button>
+        </div>
+
+        <!-- 5. WALLET & MY ACCOUNT TAB -->
+        <div id="tab-wallet" class="tab-content">
+            <h2 style="margin-bottom: 5px;">My Account & Wallet</h2>
+            
+            <div class="card">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                    <div class="avatar" style="width: 55px; height: 55px;">👑</div>
+                    <div>
+                        <div style="font-weight: bold; font-size: 16px;" id="profile-fullname">Tanjirul King</div>
+                        <div style="font-size: 12px; color: var(--text-muted);" id="profile-username">@tanjirul_user</div>
+                    </div>
+                </div>
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 12px 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 14px;">Wallet Status:</span>
+                    <span style="font-size: 13px; font-weight: bold;" id="wallet-status-badge">Not Connected</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="font-weight: bold; margin-bottom: 10px; font-size: 14px;">Connect TON Wallet</div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Enter your real TON wallet address below:</div>
+                
+                <div id="wallet-input-box" style="margin-bottom: 12px;">
+                    <input type="text" id="wallet-address-input" placeholder="EQ... or UQ..." style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #374151; background: #070913; color: white; box-sizing: border-box; font-size: 13px; outline: none;">
+                </div>
+                <button class="btn-gold" id="wallet-action-btn" onclick="toggleRealWallet()">Connect Wallet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FIXED BOTTOM NAVIGATION BAR -->
+    <div class="nav-bar">
+        <button class="nav-item active" onclick="switchTab('tab-home', this)">🏠<br>Home</button>
+        <button class="nav-item" onclick="switchTab('tab-tasks', this)">📋<br>Tasks</button>
+        <button class="nav-item" onclick="switchTab('tab-referral', this)">👥<br>Referral</button>
+        <button class="nav-item" onclick="switchTab('tab-combo', this)">📅<br>Combo</button>
+        <button class="nav-item" onclick="switchTab('tab-wallet', this)">👤<br>My & Wallet</button>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        try { tg.expand(); } catch(e) {}
+
+        let userId = tg.initDataUnsafe?.user?.id || 'tanjirul_user';
+        let userFirstName = tg.initDataUnsafe?.user?.first_name || 'Tanjirul';
+        let userLastName = tg.initDataUnsafe?.user?.last_name || 'King';
+        let username = tg.initDataUnsafe?.user?.username || 'tanjirul_user';
+
+        document.getElementById('username-display').innerText = userFirstName + ' ' + userLastName;
+        document.getElementById('profile-fullname').innerText = userFirstName + ' ' + userLastName;
+        document.getElementById('profile-username').innerText = '@' + username;
+        document.getElementById('user-initial').innerText = userFirstName.charAt(0);
+
+        let userBalance = parseFloat(localStorage.getItem('tpz_balance_' + userId)) || 0.00;
+        
+        function updateUI() {
+            document.getElementById('balance').innerText = userBalance.toFixed(2) + ' TPZ';
+            localStorage.setItem('tpz_balance_' + userId, userBalance);
+        }
+        updateUI();
+
+        let refLink = `https://t.me/TanjirulMineBot?start=ref_${userId}`;
+        document.getElementById('ref-link').innerText = refLink;
+
+        function showToast(message) {
+            let toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 2500);
+        }
+
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            if (!btn) {
+                let tabMap = { 'tab-home': 0, 'tab-tasks': 1, 'tab-referral': 2, 'tab-combo': 3, 'tab-wallet': 4 };
+                let idx = tabMap[tabId];
+                if (idx !== undefined) {
+                    let navBtns = document.querySelectorAll('.nav-item');
+                    if (navBtns[idx]) navBtns[idx].classList.add('active');
+                }
+            } else {
+                btn.classList.add('active');
+            }
+        }
+
+        // 7 Days Progressive Streak Logic
+        let streakDay = parseInt(localStorage.getItem('streak_day_' + userId)) || 0;
+        let lastCheckIn = localStorage.getItem('last_checkin_' + userId) || '';
+        let todayStr = new Date().toDateString();
+
+        const streakRewards = [10, 20, 35, 50, 75, 100, 250];
+
+        function renderStreak() {
+            let container = document.getElementById('streak-container');
+            container.innerHTML = '';
+            for (let i = 1; i <= 7; i++) {
+                let isClaimed = i <= streakDay;
+                container.innerHTML += `<div class="streak-box ${isClaimed ? 'claimed' : ''}">Day ${i}<br><strong style="color:var(--accent-gold);">+${streakRewards[i-1]}</strong></div>`;
+            }
+        }
+        renderStreak();
+
+        function claimDailyStreak() {
+            if (lastCheckIn === todayStr) {
+                showToast("Already claimed today's combo reward!");
+                return;
+            }
+            if (streakDay >= 7) streakDay = 0;
+            let reward = streakRewards[streakDay];
+            streakDay++;
+            userBalance += reward;
+            lastCheckIn = todayStr;
+
+            localStorage.setItem('streak_day_' + userId, streakDay);
+            localStorage.setItem('last_checkin_' + userId, todayStr);
+            updateUI();
+            renderStreak();
+            showToast(`Successfully claimed +${reward} TPZ combo reward!`);
+        }
+
+        // Social Tasks Logic with Correct Distribution
+        const taskRewards = { tg: 50.00, tw: 30.00, fb: 30.00 };
+
+        function handleSocialTask(taskId, url) {
+            let status = localStorage.getItem(`task_${taskId}_${userId}`) || 'unstarted';
+            let btn = document.getElementById(`task-btn-${taskId}`);
+
+            if (status === 'unstarted') {
+                window.open(url, '_blank');
+                localStorage.setItem(`task_${taskId}_${userId}`, 'visited');
+                btn.innerText = 'Verify & Claim';
+                showToast('Complete the task and click Verify');
+            } else if (status === 'visited') {
+                localStorage.setItem(`task_${taskId}_${userId}`, 'completed');
+                let reward = taskRewards[taskId];
+                userBalance += reward;
+                updateUI();
+                btn.innerText = '✅ Claimed';
+                btn.disabled = true;
+                showToast(`Task verified! +${reward} TPZ added.`);
+            }
+        }
+
+        ['tg', 'tw', 'fb'].forEach(taskId => {
+            let status = localStorage.getItem(`task_${taskId}_${userId}`);
+            let btn = document.getElementById(`task-btn-${taskId}`);
+            if (status === 'visited') {
+                btn.innerText = 'Verify & Claim';
+            } else if (status === 'completed') {
+                btn.innerText = '✅ Claimed
