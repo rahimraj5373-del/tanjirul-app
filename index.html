@@ -6,32 +6,158 @@
     <title>Tanjirul Pay & Mine</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        :root {
+            --bg-color: #070913;
+            --card-bg: linear-gradient(135deg, #131b2e, #0b111e);
+            --accent-gold: #facc15;
+            --accent-blue: #38bdf8;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
         body {
-            background-color: #070913;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
+            padding: 0;
+            padding-bottom: 90px;
+        }
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
             padding: 15px;
-            padding-bottom: 80px;
+            box-sizing: border-box;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .profile-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #facc15, #ca8a04);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+            border: 2px solid #facc15;
+        }
+        .balance-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            border: 1px solid rgba(250, 204, 21, 0.3);
+            margin-bottom: 15px;
+        }
+        .balance-amount {
+            font-size: 34px;
+            font-weight: bold;
+            color: var(--accent-gold);
+            margin: 8px 0;
+            text-shadow: 0 0 15px rgba(250, 204, 21, 0.4);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .grid-menu {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .menu-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 15px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: 0.2s;
+        }
+        .menu-card:active {
+            transform: scale(0.95);
+        }
+        .menu-icon {
+            font-size: 24px;
+            margin-bottom: 6px;
+        }
+        .menu-title {
+            font-size: 12px;
+            font-weight: 600;
         }
         .card {
-            background: #131b2e;
+            background: var(--card-bg);
             border-radius: 15px;
             padding: 15px;
             margin-bottom: 12px;
-            border: 1px solid rgba(250, 204, 21, 0.2);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
-        .btn {
-            background: #facc15;
+        .btn-gold {
+            background: linear-gradient(135deg, #facc15, #ca8a04);
             color: #000;
             border: none;
-            padding: 10px 15px;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(250, 204, 21, 0.3);
+        }
+        .btn-sm {
+            background: var(--accent-blue);
+            color: #070913;
+            border: none;
+            padding: 8px 14px;
             border-radius: 8px;
             font-weight: bold;
-            width: 100%;
             cursor: pointer;
-            margin-top: 10px;
+            font-size: 12px;
         }
+        .btn-sm:disabled {
+            background: #334155;
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+        .streak-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .streak-box {
+            background: #111827;
+            border-radius: 10px;
+            padding: 12px 5px;
+            text-align: center;
+            border: 1px solid #374151;
+            font-size: 12px;
+        }
+        .streak-box.claimed {
+            border-color: var(--success);
+            color: var(--success);
+            background: rgba(34, 197, 94, 0.1);
+        }
+        /* Fixed Bottom Navigation Bar */
         .nav-bar {
             position: fixed;
             bottom: 0;
@@ -40,181 +166,104 @@
             background: #0b111e;
             display: flex;
             justify-content: space-around;
-            padding: 10px 0;
-            border-top: 1px solid #374151;
+            padding: 8px 0;
+            border-top: 1px solid rgba(250, 204, 21, 0.2);
+            max-width: 480px;
+            margin: 0 auto;
+            z-index: 1000;
         }
-        .nav-btn {
+        .nav-item {
             background: none;
             border: none;
-            color: #94a3b8;
-            font-size: 11px;
+            color: var(--text-muted);
+            font-size: 10px;
             cursor: pointer;
             text-align: center;
         }
-        .nav-btn.active {
-            color: #facc15;
+        .nav-item.active {
+            color: var(--accent-gold);
             font-weight: bold;
         }
-        .tab {
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 13px;
             display: none;
-        }
-        .tab.active {
-            display: block;
+            z-index: 2000;
+            border: 1px solid var(--accent-gold);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
     </style>
 </head>
 <body>
 
-    <!-- HOME TAB -->
-    <div id="tab-home" class="tab active">
-        <h2>⚡ Tanjirul Pay & Mine</h2>
-        <div class="card" style="text-align: center;">
-            <p style="color: #94a3b8; margin: 0;">Total Balance</p>
-            <h1 id="balance" style="color: #facc15; margin: 10px 0;">0.00 TPZ</h1>
-            <span style="color: #22c55e; font-size: 12px;">🟢 Mining Active</span>
+    <div id="toast" class="toast">Action successful!</div>
+
+    <div class="container">
+        <!-- 1. HOME TAB -->
+        <div id="tab-home" class="tab-content active">
+            <div class="header">
+                <div class="profile-badge">
+                    <div class="avatar" id="user-initial">TP</div>
+                    <div>
+                        <div style="font-weight: bold; font-size: 14px;" id="username-display">Tanjirul King</div>
+                        <div style="font-size: 11px; color: var(--accent-gold);">👑 Gold Member</div>
+                    </div>
+                </div>
+                <div style="font-size: 18px; cursor: pointer;" onclick="showToast('Settings & notifications active')">⚙️</div>
+            </div>
+
+            <div class="balance-card">
+                <span style="color: var(--text-muted); font-size: 12px;">Total TPZ Balance</span>
+                <div class="balance-amount" id="balance">0.00 TPZ</div>
+                <span style="font-size: 11px; color: var(--success);">🟢 Mining Active</span>
+            </div>
+
+            <div class="grid-menu">
+                <div class="menu-card" onclick="switchTab('tab-mining', document.querySelectorAll('.nav-item')[1])">
+                    <div class="menu-icon">⛏️</div>
+                    <div class="menu-title">Mining</div>
+                </div>
+                <div class="menu-card" onclick="switchTab('tab-tasks', document.querySelectorAll('.nav-item')[3])">
+                    <div class="menu-icon">📋</div>
+                    <div class="menu-title">Tasks</div>
+                </div>
+                <div class="menu-card" onclick="switchTab('tab-combo', document.querySelectorAll('.nav-item')[4])">
+                    <div class="menu-icon">📅</div>
+                    <div class="menu-title">7D Combo</div>
+                </div>
+                <div class="menu-card" onclick="switchTab('tab-referral', document.querySelectorAll('.nav-item')[2])">
+                    <div class="menu-icon">👥</div>
+                    <div class="menu-title">Referral</div>
+                </div>
+                <div class="menu-card" onclick="switchTab('tab-wallet', document.querySelectorAll('.nav-item')[5])">
+                    <div class="menu-icon">👛</div>
+                    <div class="menu-title">Wallet</div>
+                </div>
+                <div class="menu-card" onclick="showToast('More features coming soon!')">
+                    <div class="menu-icon">✨</div>
+                    <div class="menu-title">More</div>
+                </div>
+            </div>
+
+            <div class="card" style="background: linear-gradient(135deg, #1e1b4b, #0f172a); border-color: #38bdf8;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-weight: bold; color: var(--accent-blue);">Start Mining Session</div>
+                        <div style="font-size: 11px; color: var(--text-muted);">Earn more TPZ tokens daily</div>
+                    </div>
+                    <button class="btn-sm" onclick="switchTab('tab-mining', document.querySelectorAll('.nav-item')[1])">Go ➔</button>
+                </div>
+            </div>
         </div>
-        <div class="card">
-            <h3>Quick Actions</h3>
-            <button class="btn" onclick="switchTab('tab-mining')">Go to Mining</button>
-            <button class="btn" style="background:#38bdf8;" onclick="switchTab('tab-wallet')">Connect Wallet</button>
-        </div>
-    </div>
 
-    <!-- MINING TAB -->
-    <div id="tab-mining" class="tab">
-        <h2>⛏️ Mining Center</h2>
-        <div class="card" style="text-align: center;">
-            <p style="color: #94a3b8;">Mining Speed</p>
-            <h3 style="color: #facc15;">+0.10 TPZ/hr</h3>
-            <button class="btn" onclick="claimMining()">Claim Earnings (+1.50 TPZ)</button>
-        </div>
-    </div>
-
-    <!-- REFERRAL TAB -->
-    <div id="tab-referral" class="tab">
-        <h2>👥 Referral Program</h2>
-        <div class="card">
-            <p style="color: #94a3b8; font-size: 12px;">Your Referral Link:</p>
-            <input type="text" id="ref-link" readonly style="width:100%; padding:8px; background:#070913; color:#fff; border:1px solid #374151; border-radius:6px; box-sizing:border-box;">
-            <button class="btn" onclick="copyRef()">Copy Link</button>
-        </div>
-    </div>
-
-    <!-- TASKS TAB -->
-    <div id="tab-tasks" class="tab">
-        <h2>📋 Daily Tasks</h2>
-        <div class="card">
-            <p>Join Telegram Channel (+1 TPZ)</p>
-            <button class="btn" onclick="completeTask('tg', 'https://t.me/tanjirul0123')">Start / Verify</button>
-        </div>
-    </div>
-
-    <!-- COMBO TAB -->
-    <div id="tab-combo" class="tab">
-        <h2>📅 7 Days Combo</h2>
-        <div class="card" style="text-align: center;">
-            <p>Daily Check-in Reward</p>
-            <button class="btn" onclick="claimDaily()">Claim Daily Bonus (+10 TPZ)</button>
-        </div>
-    </div>
-
-    <!-- WALLET / MY TAB -->
-    <div id="tab-wallet" class="tab">
-        <h2>👤 My Account & Wallet</h2>
-        <div class="card">
-            <p id="user-info" style="color: #facc15; font-weight: bold;"></p>
-            <hr style="border:0; border-top:1px solid #374151; margin:10px 0;">
-            <p style="font-size: 12px; color: #94a3b8;">Enter TON Wallet Address:</p>
-            <input type="text" id="wallet-input" placeholder="EQ... or UQ..." style="width:100%; padding:8px; background:#070913; color:#fff; border:1px solid #374151; border-radius:6px; box-sizing:border-box; margin-bottom:10px;">
-            <button class="btn" id="wallet-btn" onclick="saveWallet()">Connect Wallet</button>
-        </div>
-    </div>
-
-    <!-- NAVIGATION BAR -->
-    <div class="nav-bar">
-        <button class="nav-btn active" onclick="switchTab('tab-home', this)">🏠<br>Home</button>
-        <button class="nav-btn" onclick="switchTab('tab-mining', this)">⛏️<br>Mining</button>
-        <button class="nav-btn" onclick="switchTab('tab-referral', this)">👥<br>Referral</button>
-        <button class="nav-btn" onclick="switchTab('tab-tasks', this)">📋<br>Tasks</button>
-        <button class="nav-btn" onclick="switchTab('tab-combo', this)">📅<br>Combo</button>
-        <button class="nav-btn" onclick="switchTab('tab-wallet', this)">👤<br>My</button>
-    </div>
-
-    <script>
-        let tg = window.Telegram.WebApp;
-        try { tg.expand(); } catch(e) {}
-
-        let userId = tg.initDataUnsafe?.user?.id || 'tanjirul_user';
-        let firstName = tg.initDataUnsafe?.user?.first_name || 'Tanjirul';
-        document.getElementById('user-info').innerText = "User: " + firstName + " (" + userId + ")";
-
-        let balance = parseFloat(localStorage.getItem('tpz_' + userId)) || 0.00;
-        function updateBal() {
-            document.getElementById('balance').innerText = balance.toFixed(2) + ' TPZ';
-            localStorage.setItem('tpz_' + userId, balance);
-        }
-        updateBal();
-
-        let refUrl = "https://t.me/TanjirulMineBot?start=ref_" + userId;
-        document.getElementById('ref-link').value = refUrl;
-
-        function switchTab(tabId, btn) {
-            document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            if (btn) btn.classList.add('active');
-        }
-
-        function claimMining() {
-            balance += 1.50;
-            updateBal();
-            alert("Claimed +1.50 TPZ!");
-        }
-
-        function claimDaily() {
-            balance += 10.00;
-            updateBal();
-            alert("Daily bonus claimed (+10 TPZ)!");
-        }
-
-        function completeTask(id, url) {
-            window.open(url, '_blank');
-            balance += 1.00;
-            updateBal();
-            alert("Task completed! +1.00 TPZ added.");
-        }
-
-        function copyRef() {
-            navigator.clipboard.writeText(refUrl);
-            alert("Referral link copied!");
-        }
-
-        let savedWallet = localStorage.getItem('wallet_' + userId);
-        if (savedWallet) {
-            document.getElementById('wallet-input').value = savedWallet;
-            document.getElementById('wallet-btn').innerText = "Disconnect Wallet";
-            document.getElementById('wallet-btn').style.background = "#ef4444";
-        }
-
-        function saveWallet() {
-            let inp = document.getElementById('wallet-input');
-            if (!savedWallet) {
-                if (inp.value.length < 5) { alert("Enter valid address"); return; }
-                localStorage.setItem('wallet_' + userId, inp.value);
-                savedWallet = inp.value;
-                document.getElementById('wallet-btn').innerText = "Disconnect Wallet";
-                document.getElementById('wallet-btn').style.background = "#ef4444";
-                alert("Wallet Connected!");
-            } else {
-                localStorage.removeItem('wallet_' + userId);
-                savedWallet = null;
-                inp.value = "";
-                document.getElementById('wallet-btn').innerText = "Connect Wallet";
-                document.getElementById('wallet-btn').style.background = "#facc15";
-                alert("Wallet Disconnected!");
-            }
-        }
-    </script>
-</body>
-    </html>
+        <!-- 2. MINING TAB -->
+        <div id="tab-mining" class="tab-content">
+            <h3
     
