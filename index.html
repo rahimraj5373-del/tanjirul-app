@@ -6,88 +6,266 @@
     <title>Tanjirul Pay & Mine</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #38bdf8;
+            --gold: #facc15;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+        }
         body {
-            background-color: #0f172a;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
+            padding: 0;
+            padding-bottom: 80px;
         }
         .container {
-            max-width: 400px;
+            max-width: 480px;
             margin: 0 auto;
-            padding-top: 30px;
+            padding: 20px;
+            box-sizing: border-box;
         }
-        .logo {
-            font-size: 50px;
-            margin-bottom: 10px;
-        }
-        h1 {
-            font-size: 24px;
-            margin-bottom: 5px;
-            color: #38bdf8;
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
         }
         .balance-card {
-            background: #1e293b;
-            border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 20px;
         }
-        .balance {
-            font-size: 36px;
+        .balance-amount {
+            font-size: 38px;
             font-weight: bold;
-            color: #facc15;
+            color: var(--gold);
+            margin: 10px 0;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
         }
         .mine-btn {
             background: linear-gradient(135deg, #3b82f6, #1d4ed8);
             color: white;
             border: none;
-            padding: 15px 30px;
-            font-size: 18px;
+            padding: 18px;
+            font-size: 20px;
             font-weight: bold;
             border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-            transition: 0.2s;
             width: 100%;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(59, 130, 246, 0.4);
+            margin-top: 20px;
+            transition: transform 0.1s;
         }
         .mine-btn:active {
-            transform: scale(0.95);
+            transform: scale(0.96);
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .btn-sm {
+            background: #38bdf8;
+            color: #0f172a;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #1e293b;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            max-width: 480px;
+            margin: 0 auto;
+        }
+        .nav-item {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .nav-item.active {
+            color: var(--accent);
+            font-weight: bold;
+        }
+        .streak-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .streak-box {
+            background: #0f172a;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #334155;
+        }
+        .streak-box.claimed {
+            border-color: #22c55e;
+            color: #22c55e;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="logo">⚡</div>
-        <h1>Tanjirul Pay & Mine</h1>
-        <p>Tap the button below to mine TPZ tokens!</p>
-
-        <div class="balance-card">
-            <p style="margin: 0; color: #94a3b8;">Your Balance</p>
-            <div class="balance" id="balance">0.00 TPZ</div>
+        <!-- MINE TAB -->
+        <div id="tab-mine" class="tab-content active">
+            <div class="header">
+                <h2>⚡ Tanjirul Pay & Mine</h2>
+            </div>
+            <div class="balance-card">
+                <span style="color: var(--text-muted);">Total TPZ Balance</span>
+                <div class="balance-amount" id="balance">0.00 TPZ</div>
+                <span style="font-size: 12px; color: #22c55e;">🟢 Mining Active</span>
+            </div>
+            <div style="text-align: center; margin: 40px 0;">
+                <div style="font-size: 70px;" id="tap-icon">🪙</div>
+            </div>
+            <button class="mine-btn" onclick="mineToken()">⛏️ TAP TO MINE</button>
         </div>
 
-        <button class="mine-btn" onclick="mineToken()">⛏️ TAP TO MINE</button>
+        <!-- TASKS TAB -->
+        <div id="tab-tasks" class="tab-content">
+            <h3>📋 Daily Tasks & Streak</h3>
+            <p style="color: var(--text-muted); font-size: 14px;">Claim your 7-day sequential streak & complete tasks:</p>
+            
+            <div class="streak-grid">
+                <div class="streak-box claimed">Day 1<br>+100</div>
+                <div class="streak-box">Day 2<br>+200</div>
+                <div class="streak-box">Day 3<br>+300</div>
+                <div class="streak-box">Day 4<br>+500</div>
+            </div>
+
+            <div class="card">
+                <div>
+                    <strong>📢 Join Telegram Channel</strong>
+                    <div style="font-size: 12px; color: var(--text-muted);">+500 TPZ</div>
+                </div>
+                <button class="btn-sm" onclick="completeTask(500, this)">Claim</button>
+            </div>
+            <div class="card">
+                <div>
+                    <strong>🌐 Follow on Twitter (X)</strong>
+                    <div style="font-size: 12px; color: var(--text-muted);">+500 TPZ</div>
+                </div>
+                <button class="btn-sm" onclick="completeTask(500, this)">Claim</button>
+            </div>
+        </div>
+
+        <!-- FRIENDS TAB -->
+        <div id="tab-friends" class="tab-content">
+            <h3>👥 Invite Friends</h3>
+            <p style="color: var(--text-muted); font-size: 14px;">Invite your friends and earn 1,000 TPZ for each referral!</p>
+            
+            <div class="balance-card" style="padding: 15px; text-align: left;">
+                <div style="font-size: 14px; color: var(--text-muted);">Your Referral Link:</div>
+                <div id="ref-link" style="font-size: 12px; color: var(--accent); word-break: break-all; margin: 8px 0;">https://t.me/TanjirulMineBot?start=ref123</div>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button class="btn-sm" style="flex: 1;" onclick="copyRefLink()">📋 Copy Link</button>
+                    <button class="btn-sm" style="flex: 1; background: #22c55e; color: white;" onclick="shareRefLink()">↗️ Share</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- WALLET TAB -->
+        <div id="tab-wallet" class="tab-content">
+            <h3>👛 Connect Wallet</h3>
+            <p style="color: var(--text-muted); font-size: 14px;">Connect your TON wallet for future token listing & payouts:</p>
+            
+            <div class="card" style="margin-top: 20px;">
+                <div>
+                    <strong>TON Wallet</strong>
+                    <div style="font-size: 12px; color: var(--text-muted);" id="wallet-status">Not Connected</div>
+                </div>
+                <button class="btn-sm" onclick="connectWallet()">Connect</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVIGATION BAR -->
+    <div class="nav-bar">
+        <button class="nav-item active" onclick="switchTab('mine', this)">⛏️<br>Mine</button>
+        <button class="nav-item" onclick="switchTab('tasks', this)">📋<br>Tasks</button>
+        <button class="nav-item" onclick="switchTab('friends', this)">👥<br>Friends</button>
+        <button class="nav-item" onclick="switchTab('wallet', this)">👛<br>Wallet</button>
     </div>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        let score = 0;
+        let balance = parseFloat(localStorage.getItem('tpz_balance')) || 0.00;
+        document.getElementById('balance').innerText = balance.toFixed(2) + ' TPZ';
+
         function mineToken() {
-            score += 1;
-            document.getElementById('balance').innerText = score.toFixed(2) + ' TPZ';
-            
-            // Haptic feedback if available
-            if (tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('medium');
-            }
+            balance += 0.50;
+            document.getElementById('balance').innerText = balance.toFixed(2) + ' TPZ';
+            localStorage.setItem('tpz_balance', balance);
+            if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+        }
+
+        function switchTab(tabName, btn) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabName).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        function completeTask(reward, btn) {
+            balance += reward;
+            document.getElementById('balance').innerText = balance.toFixed(2) + ' TPZ';
+            localStorage.setItem('tpz_balance', balance);
+            btn.innerText = '✅ Claimed';
+            btn.style.background = '#22c55e';
+            btn.disabled = true;
+        }
+
+        function copyRefLink() {
+            let link = "https://t.me/TanjirulMineBot?start=ref123";
+            navigator.clipboard.writeText(link).then(() => {
+                alert("Referral link copied to clipboard!");
+            });
+        }
+
+        function shareRefLink() {
+            let text = "Join Tanjirul Pay & Mine and start earning TPZ tokens with me!";
+            let url = "https://t.me/share/url?url=" + encodeURIComponent("https://t.me/TanjirulMineBot") + "&text=" + encodeURIComponent(text);
+            window.open(url, '_blank');
+        }
+
+        function connectWallet() {
+            document.getElementById('wallet-status').innerText = "Connected: UQD...xyz";
+            alert("Wallet successfully connected!");
         }
     </script>
-
 </body>
-</html>
+            </html>
+            
