@@ -7,13 +7,14 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --accent: #38bdf8;
-            --gold: #facc15;
+            --bg-color: #0b0f19;
+            --card-bg: linear-gradient(145deg, #182030, #111827);
+            --accent-gold: #f59e0b;
+            --accent-glow: rgba(245, 158, 11, 0.3);
             --text-main: #ffffff;
-            --text-muted: #94a3b8;
-            --success: #22c55e;
+            --text-muted: #9ca3af;
+            --success: #10b981;
+            --danger: #ef4444;
         }
         body {
             background-color: var(--bg-color);
@@ -31,22 +32,28 @@
         }
         .header {
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .header h2 {
+            color: var(--accent-gold);
+            letter-spacing: 1px;
+            margin: 0;
         }
         .balance-card {
             background: var(--card-bg);
             border-radius: 20px;
-            padding: 20px;
+            padding: 25px;
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(245, 158, 11, 0.2);
             margin-bottom: 20px;
         }
         .balance-amount {
-            font-size: 36px;
+            font-size: 38px;
             font-weight: bold;
-            color: var(--gold);
-            margin: 8px 0;
+            color: var(--accent-gold);
+            margin: 10px 0;
+            text-shadow: 0 0 15px var(--accent-glow);
         }
         .tab-content {
             display: none;
@@ -55,8 +62,8 @@
             display: block;
         }
         .mine-btn {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: white;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #000;
             border: none;
             padding: 16px;
             font-size: 20px;
@@ -64,7 +71,7 @@
             border-radius: 50px;
             width: 100%;
             cursor: pointer;
-            box-shadow: 0 5px 20px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 5px 20px rgba(245, 158, 11, 0.4);
             margin-top: 20px;
             transition: transform 0.1s;
         }
@@ -80,10 +87,11 @@
             justify-content: space-between;
             align-items: center;
             border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
         .btn-sm {
-            background: var(--accent);
-            color: #0f172a;
+            background: var(--accent-gold);
+            color: #000;
             border: none;
             padding: 8px 16px;
             border-radius: 8px;
@@ -91,8 +99,8 @@
             cursor: pointer;
         }
         .btn-sm:disabled {
-            background: #475569;
-            color: #94a3b8;
+            background: #374151;
+            color: #9ca3af;
             cursor: not-allowed;
         }
         .nav-bar {
@@ -100,10 +108,10 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: #1e293b;
+            background: #111827;
             display: flex;
             justify-content: space-around;
-            padding: 10px 0;
+            padding: 12px 0;
             border-top: 1px solid rgba(255,255,255,0.1);
             max-width: 480px;
             margin: 0 auto;
@@ -118,7 +126,7 @@
             text-align: center;
         }
         .nav-item.active {
-            color: var(--accent);
+            color: var(--accent-gold);
             font-weight: bold;
         }
         .streak-grid {
@@ -128,31 +136,32 @@
             margin-bottom: 15px;
         }
         .streak-box {
-            background: #0f172a;
+            background: #182030;
             border-radius: 10px;
             padding: 10px 5px;
             text-align: center;
-            border: 1px solid #334155;
+            border: 1px solid #374151;
             font-size: 12px;
         }
         .streak-box.claimed {
             border-color: var(--success);
             color: var(--success);
-            background: rgba(34, 197, 94, 0.1);
+            background: rgba(16, 185, 129, 0.1);
         }
         .toast {
             position: fixed;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: #334155;
+            background: #1f2937;
             color: white;
             padding: 10px 20px;
             border-radius: 20px;
             font-size: 14px;
             display: none;
             z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border: 1px solid var(--accent-gold);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
     </style>
 </head>
@@ -171,24 +180,23 @@
                 <div class="balance-amount" id="balance">0.00 TPZ</div>
                 <span style="font-size: 12px; color: var(--success);">🟢 Mining Active</span>
             </div>
-            <div style="text-align: center; margin: 30px 0;">
-                <div style="font-size: 65px;" id="coin-icon">🪙</div>
+            <div style="text-align: center; margin: 40px 0;">
+                <div style="font-size: 75px; filter: drop-shadow(0 0 15px rgba(245,158,11,0.5));">🪙</div>
             </div>
             <button class="mine-btn" onclick="mineToken()">⛏️ TAP TO MINE</button>
         </div>
 
         <!-- TASKS TAB -->
         <div id="tab-tasks" class="tab-content">
-            <h3>📋 Daily Tasks & Streak</h3>
-            <p style="color: var(--text-muted); font-size: 13px;">Complete daily check-in & verified social tasks:</p>
+            <h3>📋 Tasks & Daily Streak</h3>
+            <p style="color: var(--text-muted); font-size: 13px;">Complete check-in & social tasks to earn TPZ:</p>
             
             <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px;">7-Day Daily Streak</div>
             <div class="streak-grid" id="streak-container"></div>
-            <button class="btn-sm" style="width: 100%; margin-bottom: 20px; padding: 10px;" onclick="claimDailyStreak()">Claim Today's Streak</button>
+            <button class="btn-sm" style="width: 100%; margin-bottom: 20px; padding: 12px;" onclick="claimDailyStreak()">Claim Today's Streak</button>
 
             <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px;">Social Tasks</div>
             
-            <!-- Telegram Task -->
             <div class="card">
                 <div>
                     <strong>📢 Join Telegram Channel</strong>
@@ -197,13 +205,20 @@
                 <button class="btn-sm" id="task-btn-tg" onclick="handleSocialTask('tg', 'https://t.me/tanjirul0123')">Start</button>
             </div>
 
-            <!-- Twitter Task -->
             <div class="card">
                 <div>
                     <strong>🌐 Follow on Twitter (X)</strong>
                     <div style="font-size: 12px; color: var(--text-muted);">+500 TPZ</div>
                 </div>
                 <button class="btn-sm" id="task-btn-tw" onclick="handleSocialTask('tw', 'https://x.com/tanjirul_king')">Start</button>
+            </div>
+
+            <div class="card">
+                <div>
+                    <strong>👥 Follow Facebook Page</strong>
+                    <div style="font-size: 12px; color: var(--text-muted);">+500 TPZ</div>
+                </div>
+                <button class="btn-sm" id="task-btn-fb" onclick="handleSocialTask('fb', 'https://www.facebook.com/share/1Qi2SaUBck/')">Start</button>
             </div>
         </div>
 
@@ -214,7 +229,7 @@
             
             <div class="balance-card" style="padding: 15px; text-align: left;">
                 <div style="font-size: 13px; color: var(--text-muted);">Your Unique Referral Link:</div>
-                <div id="ref-link" style="font-size: 12px; color: var(--accent); word-break: break-all; margin: 8px 0;">Loading...</div>
+                <div id="ref-link" style="font-size: 12px; color: var(--accent-gold); word-break: break-all; margin: 8px 0;">Loading...</div>
                 <div style="display: flex; gap: 10px; margin-top: 12px;">
                     <button class="btn-sm" style="flex: 1;" onclick="copyRefLink()">📋 Copy Link</button>
                     <button class="btn-sm" style="flex: 1; background: var(--success); color: white;" onclick="shareRefLink()">↗️ Share</button>
@@ -230,9 +245,9 @@
             <div class="card" style="margin-top: 20px;">
                 <div>
                     <strong>TON Wallet</strong>
-                    <div style="font-size: 12px; color: var(--text-muted);" id="wallet-status">Not Connected</div>
+                    <div style="font-size: 12px; color: var(--success);" id="wallet-status">Not Connected</div>
                 </div>
-                <button class="btn-sm" id="wallet-btn" onclick="connectWallet()">Connect</button>
+                <button class="btn-sm" id="wallet-btn" onclick="toggleWalletConnect()">Connect</button>
             </div>
         </div>
     </div>
@@ -315,7 +330,7 @@
             showToast(`Successfully claimed +${reward} TPZ!`);
         }
 
-        // Proper Social Task Verification Logic
+        // Social Task Logic
         function handleSocialTask(taskId, url) {
             let status = localStorage.getItem(`task_${taskId}_${userId}`) || 'unstarted';
             let btn = document.getElementById(`task-btn-${taskId}`);
@@ -326,7 +341,6 @@
                 btn.innerText = 'Verify & Claim';
                 showToast('Please complete the task and click Verify');
             } else if (status === 'visited') {
-                // Simulating verification check
                 localStorage.setItem(`task_${taskId}_${userId}`, 'completed');
                 userBalance += 500;
                 updateBalance();
@@ -336,8 +350,7 @@
             }
         }
 
-        // Initialize Task Buttons on load
-        ['tg', 'tw'].forEach(taskId => {
+        ['tg', 'tw', 'fb'].forEach(taskId => {
             let status = localStorage.getItem(`task_${taskId}_${userId}`);
             let btn = document.getElementById(`task-btn-${taskId}`);
             if (status === 'visited') {
@@ -360,37 +373,42 @@
             window.open(url, '_blank');
         }
 
-        // Wallet Logic
-        let isConnected = localStorage.getItem('wallet_connected_' + userId) === 'true';
-        if (isConnected) {
-            document.getElementById('wallet-status').innerText = "Connected: UQDx...73a1";
-            let wBtn = document.getElementById('wallet-btn');
-            wBtn.innerText = "Disconnect";
-            wBtn.style.background = "#ef4444";
-            wBtn.style.color = "white";
-        }
+        // Clear & Accurate Wallet Connect State Logic
+        let isWalletConnected = localStorage.getItem('wallet_connected_' + userId) === 'true';
+        let walletBtn = document.getElementById('wallet-btn');
+        let walletStatus = document.getElementById('wallet-status');
 
-        function connectWallet() {
-            let wBtn = document.getElementById('wallet-btn');
-            if (!isConnected) {
-                isConnected = true;
+        function updateWalletUI() {
+            if (isWalletConnected) {
+                walletStatus.innerText = "Connected: UQDx...73a1 (TON)";
+                walletStatus.style.color = "var(--success)";
+                walletBtn.innerText = "Disconnect";
+                walletBtn.style.background = "var(--danger)";
+                walletBtn.style.color = "white";
+            } else {
+                walletStatus.innerText = "Not Connected";
+                walletStatus.style.color = "var(--text-muted)";
+                walletBtn.innerText = "Connect";
+                walletBtn.style.background = "var(--accent-gold)";
+                walletBtn.style.color = "#000";
+            }
+        }
+        updateWalletUI();
+
+        function toggleWalletConnect() {
+            if (!isWalletConnected) {
+                isWalletConnected = true;
                 localStorage.setItem('wallet_connected_' + userId, 'true');
-                document.getElementById('wallet-status').innerText = "Connected: UQDx...73a1";
-                wBtn.innerText = "Disconnect";
-                wBtn.style.background = "#ef4444";
-                wBtn.style.color = "white";
+                updateWalletUI();
                 showToast("TON Wallet successfully connected!");
             } else {
-                isConnected = false;
+                isWalletConnected = false;
                 localStorage.removeItem('wallet_connected_' + userId);
-                document.getElementById('wallet-status').innerText = "Not Connected";
-                wBtn.innerText = "Connect";
-                wBtn.style.background = "var(--accent)";
-                wBtn.style.color = "#0f172a";
+                updateWalletUI();
                 showToast("Wallet disconnected!");
             }
         }
     </script>
 </body>
-                                                       </html>
-                                                       
+        </html>
+    
