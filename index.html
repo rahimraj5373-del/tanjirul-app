@@ -54,6 +54,9 @@
             cursor: pointer;
             font-size: 14px;
             margin-top: 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
         }
         .btn-sm {
             background: #38bdf8;
@@ -64,6 +67,8 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 12px;
+            text-decoration: none;
+            display: inline-block;
         }
         .streak-grid {
             display: grid;
@@ -154,7 +159,7 @@
                     <strong>📢 Join Telegram Channel</strong>
                     <div style="font-size: 11px; color: #facc15; margin-top: 3px;">+50.00 TPZ</div>
                 </div>
-                <button class="btn-sm" id="task-btn-tg" onclick="handleTask('tg', 'https://t.me/tanjirul0123')">Start</button>
+                <div id="task-action-tg"></div>
             </div>
 
             <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
@@ -162,7 +167,7 @@
                     <strong>🌐 Follow on Twitter (X)</strong>
                     <div style="font-size: 11px; color: #facc15; margin-top: 3px;">+30.00 TPZ</div>
                 </div>
-                <button class="btn-sm" id="task-btn-tw" onclick="handleTask('tw', 'https://x.com/tanjirul_king')">Start</button>
+                <div id="task-action-tw"></div>
             </div>
 
             <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
@@ -170,7 +175,7 @@
                     <strong>👥 Follow Facebook Page</strong>
                     <div style="font-size: 11px; color: #facc15; margin-top: 3px;">+30.00 TPZ</div>
                 </div>
-                <button class="btn-sm" id="task-btn-fb" onclick="handleTask('fb', 'https://www.facebook.com/share/1Qi2SaUBck/')">Start</button>
+                <div id="task-action-fb"></div>
             </div>
         </div>
 
@@ -291,46 +296,43 @@
             alert("Claimed +" + amt + " TPZ!");
         }
 
-        // Tasks Logic (Fixed with Telegram WebApp openLink)
+        // Bulletproof Tasks Logic
         let taskRew = { tg: 50, tw: 30, fb: 30 };
-        function handleTask(id, url) {
-            let status = localStorage.getItem('task_' + id + '_' + userId) || 'no';
-            let btn = document.getElementById('task-btn-' + id);
-            
-            if (status === 'no') {
-                // Telegram native link opener for smooth navigation inside telegram
-                try {
-                    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openLink) {
-                        window.Telegram.WebApp.openLink(url);
-                    } else {
-                        window.open(url, '_blank');
-                    }
-                } catch(e) {
-                    window.open(url, '_blank');
-                }
+        let taskUrls = { 
+            tg: 'https://t.me/tanjirul0123', 
+            tw: 'https://x.com/tanjirul_king', 
+            fb: 'https://www.facebook.com/share/1Qi2SaUBck/' 
+        };
 
-                localStorage.setItem('task_' + id + '_' + userId, 'visited');
-                btn.innerText = 'Verify';
-            } else if (status === 'visited') {
-                localStorage.setItem('task_' + id + '_' + userId, 'done');
-                balance += taskRew[id];
-                updateBal();
-                btn.innerText = 'Claimed';
-                btn.disabled = true;
-                alert("Verified! Added +" + taskRew[id] + " TPZ");
-            }
+        function renderTasks() {
+            ['tg', 'tw', 'fb'].forEach(id => {
+                let status = localStorage.getItem('task_' + id + '_' + userId) || 'no';
+                let container = document.getElementById('task-action-' + id);
+                
+                if (status === 'no') {
+                    container.innerHTML = `<a href="${taskUrls[id]}" target="_blank" class="btn-sm" onclick="setTaskVisited('${id}')">Start</a>`;
+                } else if (status === 'visited') {
+                    container.innerHTML = `<button class="btn-sm" onclick="verifyTask('${id}')">Verify</button>`;
+                } else if (status === 'done') {
+                    container.innerHTML = `<button class="btn-sm" disabled style="background:#22c55e; color:#000;">Claimed</button>`;
+                }
+            });
         }
 
-        // Restore task states on load
-        ['tg', 'tw', 'fb'].forEach(id => {
-            let status = localStorage.getItem('task_' + id + '_' + userId);
-            let btn = document.getElementById('task-btn-' + id);
-            if (status === 'visited') btn.innerText = 'Verify';
-            if (status === 'done') { 
-                btn.innerText = 'Claimed'; 
-                btn.disabled = true; 
-            }
-        });
+        function setTaskVisited(id) {
+            localStorage.setItem('task_' + id + '_' + userId, 'visited');
+            setTimeout(() => { renderTasks(); }, 500);
+        }
+
+        function verifyTask(id) {
+            localStorage.setItem('task_' + id + '_' + userId, 'done');
+            balance += taskRew[id];
+            updateBal();
+            renderTasks();
+            alert("Verified! Added +" + taskRew[id] + " TPZ");
+        }
+
+        renderTasks();
 
         function copyRef() {
             navigator.clipboard.writeText(refUrl);
@@ -380,5 +382,5 @@
         }
     </script>
 </body>
-                    </html>
-            
+                </html>
+                                                                       
