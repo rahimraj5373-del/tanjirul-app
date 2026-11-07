@@ -217,11 +217,11 @@
 
     <!-- BOTTOM NAVIGATION -->
     <div class="nav-bar">
-        <button class="nav-item active" onclick="switchTab('tab-home', this)">🏠<br>Home</button>
-        <button class="nav-item" onclick="switchTab('tab-tasks', this)">📋<br>Tasks</button>
-        <button class="nav-item" onclick="switchTab('tab-referral', this)">👥<br>Referral</button>
-        <button class="nav-item" onclick="switchTab('tab-combo', this)">📅<br>Combo</button>
-        <button class="nav-item" onclick="switchTab('tab-wallet', this)">👤<br>My & Wallet</button>
+        <button class="nav-item active" onclick="switchTab('tab-home')">🏠<br>Home</button>
+        <button class="nav-item" onclick="switchTab('tab-tasks')">📋<br>Tasks</button>
+        <button class="nav-item" onclick="switchTab('tab-referral')">👥<br>Referral</button>
+        <button class="nav-item" onclick="switchTab('tab-combo')">📅<br>Combo</button>
+        <button class="nav-item" onclick="switchTab('tab-wallet')">👤<br>My & Wallet</button>
     </div>
 
     <script>
@@ -291,14 +291,24 @@
             alert("Claimed +" + amt + " TPZ!");
         }
 
-        // Tasks Logic (Fixed)
+        // Tasks Logic (Fixed with Telegram WebApp openLink)
         let taskRew = { tg: 50, tw: 30, fb: 30 };
         function handleTask(id, url) {
             let status = localStorage.getItem('task_' + id + '_' + userId) || 'no';
             let btn = document.getElementById('task-btn-' + id);
             
             if (status === 'no') {
-                window.open(url, '_blank');
+                // Telegram native link opener for smooth navigation inside telegram
+                try {
+                    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openLink) {
+                        window.Telegram.WebApp.openLink(url);
+                    } else {
+                        window.open(url, '_blank');
+                    }
+                } catch(e) {
+                    window.open(url, '_blank');
+                }
+
                 localStorage.setItem('task_' + id + '_' + userId, 'visited');
                 btn.innerText = 'Verify';
             } else if (status === 'visited') {
@@ -370,5 +380,5 @@
         }
     </script>
 </body>
-</html>
-
+                    </html>
+            
