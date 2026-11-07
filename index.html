@@ -16,7 +16,7 @@
             padding: 15px;
             padding-bottom: 95px;
         }
-        h1, h2, h3, .brand, .balance-amount, .btn, .btn-sm {
+        h1, h2, h3, .brand, .balance-amount, .btn, .btn-sm, .btn-share {
             font-family: 'Orbitron', sans-serif;
         }
         .container {
@@ -180,7 +180,7 @@
         <div id="tab-home" class="tab-content active">
             <div class="header">
                 <div>
-                    <strong id="username-display" style="font-size: 15px; color: #facc15; font-family: 'Orbitron', sans-serif;">Tanjirul King</strong>
+                    <strong id="username-display" style="font-size: 15px; color: #facc15;">Tanjirul King</strong>
                     <div style="font-size: 11px; color: #38bdf8;">👑 Gold Member</div>
                 </div>
                 <div style="font-size: 20px;">⚡</div>
@@ -199,37 +199,40 @@
             </div>
         </div>
 
-        <!-- 2. TASKS TAB -->
+        <!-- 2. TASKS TAB (Hardcoded visible buttons) -->
         <div id="tab-tasks" class="tab-content">
             <h2 style="font-size: 18px; color: #facc15; margin-bottom: 5px;">⚡ Daily Tasks & Socials</h2>
             <p style="font-size: 12px; color: #94a3b8; margin-bottom: 15px;">Complete tasks to mine TPZ tokens:</p>
             
+            <!-- Telegram Task -->
             <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <strong style="font-size: 13px;">📢 Join Telegram Channel</strong>
                     <div style="font-size: 12px; color: #facc15; margin-top: 4px; font-weight: bold;">+50.00 TPZ</div>
                 </div>
-                <div id="task-action-tg"></div>
+                <a href="https://t.me/tanjirul0123" target="_blank" class="btn-sm" id="task-btn-tg" onclick="handleTask('tg')">Start</a>
             </div>
 
+            <!-- Twitter Task -->
             <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <strong style="font-size: 13px;">🌐 Follow on Twitter (X)</strong>
                     <div style="font-size: 12px; color: #facc15; margin-top: 4px; font-weight: bold;">+30.00 TPZ</div>
                 </div>
-                <div id="task-action-tw"></div>
+                <a href="https://x.com/tanjirul_king" target="_blank" class="btn-sm" id="task-btn-tw" onclick="handleTask('tw')">Start</a>
             </div>
 
+            <!-- Facebook Task -->
             <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <strong style="font-size: 13px;">👥 Follow Facebook Page</strong>
                     <div style="font-size: 12px; color: #facc15; margin-top: 4px; font-weight: bold;">+30.00 TPZ</div>
                 </div>
-                <div id="task-action-fb"></div>
+                <a href="https://www.facebook.com/share/1Qi2SaUBck/" target="_blank" class="btn-sm" id="task-btn-fb" onclick="handleTask('fb')">Start</a>
             </div>
         </div>
 
-        <!-- 3. REFERRAL TAB (Copy & Share Options) -->
+        <!-- 3. REFERRAL TAB -->
         <div id="tab-referral" class="tab-content">
             <h2 style="font-size: 18px; text-align: center; color: #facc15;">👥 Referral Program</h2>
             <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 15px;">Invite friends and earn 50 TPZ per referral!</p>
@@ -350,43 +353,50 @@
             alert("Claimed +" + amt + " TPZ!");
         }
 
-        // Tasks Logic with guaranteed rendering & click triggers
+        // Tasks Logic (Robust & Simple)
         let taskRew = { tg: 50, tw: 30, fb: 30 };
-        let taskUrls = { 
-            tg: 'https://t.me/tanjirul0123', 
-            tw: 'https://x.com/tanjirul_king', 
-            fb: 'https://www.facebook.com/share/1Qi2SaUBck/' 
-        };
 
-        function renderTasks() {
-            ['tg', 'tw', 'fb'].forEach(id => {
-                let status = localStorage.getItem('task_' + id + '_' + userId) || 'no';
-                let container = document.getElementById('task-action-' + id);
-                
-                if (status === 'no') {
-                    container.innerHTML = `<a href="${taskUrls[id]}" target="_blank" class="btn-sm" onclick="setTaskVisited('${id}')">Start</a>`;
-                } else if (status === 'visited') {
-                    container.innerHTML = `<button class="btn-sm" style="background:#eab308; color:#000;" onclick="verifyTask('${id}')">Verify</button>`;
+        function handleTask(id) {
+            let status = localStorage.getItem('task_' + id + '_' + userId) || 'no';
+            let btn = document.getElementById('task-btn-' + id);
+            
+            if (status === 'no') {
+                localStorage.setItem('task_' + id + '_' + userId, 'visited');
+                setTimeout(() => {
+                    btn.innerText = 'Verify';
+                    btn.style.background = 'linear-gradient(135deg, #eab308, #ca8a04)';
+                    btn.style.color = '#000';
+                }, 300);
+            } else if (status === 'visited') {
+                event.preventDefault(); // Stop link opening on second click
+                localStorage.setItem('task_' + id + '_' + userId, 'done');
+                balance += taskRew[id];
+                updateBal();
+                btn.innerText = 'Claimed';
+                btn.disabled = true;
+                btn.style.background = '#22c55e';
+                btn.style.color = '#000';
+                alert("Verified! Added +" + taskRew[id] + " TPZ");
+            }
+        }
+
+        // Restore task states on load
+        ['tg', 'tw', 'fb'].forEach(id => {
+            let status = localStorage.getItem('task_' + id + '_' + userId);
+            let btn = document.getElementById('task-btn-' + id);
+            if (btn) {
+                if (status === 'visited') {
+                    btn.innerText = 'Verify';
+                    btn.style.background = 'linear-gradient(135deg, #eab308, #ca8a04)';
+                    btn.style.color = '#000';
                 } else if (status === 'done') {
-                    container.innerHTML = `<button class="btn-sm" disabled style="background:#22c55e; color:#000;">Claimed</button>`;
+                    btn.innerText = 'Claimed';
+                    btn.disabled = true;
+                    btn.style.background = '#22c55e';
+                    btn.style.color = '#000';
                 }
-            });
-        }
-
-        function setTaskVisited(id) {
-            localStorage.setItem('task_' + id + '_' + userId, 'visited');
-            setTimeout(() => { renderTasks(); }, 500);
-        }
-
-        function verifyTask(id) {
-            localStorage.setItem('task_' + id + '_' + userId, 'done');
-            balance += taskRew[id];
-            updateBal();
-            renderTasks();
-            alert("Verified! Added +" + taskRew[id] + " TPZ");
-        }
-
-        renderTasks();
+            }
+        });
 
         function copyRef() {
             navigator.clipboard.writeText(refUrl);
@@ -451,5 +461,5 @@
         }
     </script>
 </body>
-    </html>
-                                                                                
+            </html>
+    
