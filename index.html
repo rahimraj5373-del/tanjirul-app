@@ -69,6 +69,7 @@
             font-size: 12px;
             text-decoration: none;
             display: inline-block;
+            text-align: center;
         }
         .streak-grid {
             display: grid;
@@ -296,7 +297,7 @@
             alert("Claimed +" + amt + " TPZ!");
         }
 
-        // Bulletproof Tasks Logic
+        // Tasks Logic (HTML Anchor Tag for guaranteed opening)
         let taskRew = { tg: 50, tw: 30, fb: 30 };
         let taskUrls = { 
             tg: 'https://t.me/tanjirul0123', 
@@ -321,7 +322,7 @@
 
         function setTaskVisited(id) {
             localStorage.setItem('task_' + id + '_' + userId, 'visited');
-            setTimeout(() => { renderTasks(); }, 500);
+            setTimeout(() => { renderTasks(); }, 600);
         }
 
         function verifyTask(id) {
@@ -382,5 +383,5 @@
         }
     </script>
 </body>
-                </html>
-                                                                       
+                    </html>
+    
