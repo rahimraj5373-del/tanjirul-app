@@ -4,16 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tanjirul Pay & Mine</title>
-    <!-- Telegram WebApp Script -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Google Font: Orbitron (Robotic Tech Font) -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #070913;
+            background: linear-gradient(135deg, #070913, #0f172a);
             color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             margin: 0;
             padding: 15px;
             padding-bottom: 95px;
+        }
+        h1, h2, h3, .brand, .balance-amount, .btn, .btn-sm {
+            font-family: 'Orbitron', sans-serif;
         }
         .container {
             max-width: 480px;
@@ -23,34 +27,44 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #131b2e;
-            padding: 12px 15px;
-            border-radius: 14px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(250, 204, 21, 0.3);
+            background: linear-gradient(135deg, #131b2e, #1a233a);
+            padding: 14px 18px;
+            border-radius: 16px;
+            margin-bottom: 18px;
+            border: 1px solid rgba(250, 204, 21, 0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
         .card {
-            background: #131b2e;
-            border-radius: 14px;
-            padding: 16px;
+            background: linear-gradient(135deg, #131b2e, #1e293b);
+            border-radius: 16px;
+            padding: 18px;
             margin-bottom: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(250, 204, 21, 0.15);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
         .balance-box {
             text-align: center;
-            background: linear-gradient(135deg, #1e1b4b, #0f172a);
-            border-radius: 16px;
-            padding: 22px;
-            border: 1px solid #facc15;
-            margin-bottom: 15px;
+            background: linear-gradient(135deg, #1e1b4b, #0f172a, #131b2e);
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid rgba(250, 204, 21, 0.6);
+            margin-bottom: 18px;
+            box-shadow: 0 8px 25px rgba(250, 204, 21, 0.15);
+        }
+        .balance-amount {
+            font-size: 34px;
+            font-weight: 900;
+            color: #facc15;
+            margin: 10px 0;
+            text-shadow: 0 0 15px rgba(250, 204, 21, 0.4);
         }
         .btn {
-            background: linear-gradient(135deg, #facc15, #ca8a04);
+            background: linear-gradient(135deg, #facc15, #d97706);
             color: #000;
             border: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: bold;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
             width: 100%;
             cursor: pointer;
             font-size: 14px;
@@ -58,20 +72,49 @@
             text-align: center;
             text-decoration: none;
             display: inline-block;
+            box-shadow: 0 4px 15px rgba(250, 204, 21, 0.3);
+            transition: 0.2s;
         }
+        .btn:active { transform: scale(0.97); }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
         .btn-sm {
-            background: #38bdf8;
-            color: #070913;
+            background: linear-gradient(135deg, #38bdf8, #0284c7);
+            color: #fff;
             border: none;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-weight: bold;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 700;
             cursor: pointer;
             font-size: 12px;
             text-decoration: none;
             display: inline-block;
             text-align: center;
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
         }
+        
+        .btn-share {
+            background: linear-gradient(135deg, #22c55e, #15803d);
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+        }
+
         .streak-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -79,28 +122,31 @@
             margin-bottom: 15px;
         }
         .streak-box {
-            background: #111827;
+            background: #0b111e;
             border-radius: 10px;
             padding: 12px 5px;
             text-align: center;
             border: 1px solid #374151;
-            font-size: 12px;
+            font-size: 11px;
+            font-family: 'Orbitron', sans-serif;
         }
         .streak-box.claimed {
             border-color: #22c55e;
             color: #22c55e;
             background: rgba(34, 197, 94, 0.15);
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.2);
         }
         .nav-bar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: #0b111e;
+            background: rgba(11, 17, 30, 0.95);
+            backdrop-filter: blur(10px);
             display: flex;
             justify-content: space-around;
             padding: 10px 0;
-            border-top: 1px solid rgba(250, 204, 21, 0.2);
+            border-top: 1px solid rgba(250, 204, 21, 0.3);
             max-width: 480px;
             margin: 0 auto;
             z-index: 1000;
@@ -112,10 +158,12 @@
             font-size: 11px;
             cursor: pointer;
             text-align: center;
+            font-family: 'Orbitron', sans-serif;
         }
         .nav-item.active {
             color: #facc15;
-            font-weight: bold;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(250, 204, 21, 0.5);
         }
         .tab-content {
             display: none;
@@ -132,83 +180,87 @@
         <div id="tab-home" class="tab-content active">
             <div class="header">
                 <div>
-                    <strong id="username-display" style="font-size: 15px; color: #facc15;">Tanjirul King</strong>
-                    <div style="font-size: 11px; color: #94a3b8;">👑 Gold Member</div>
+                    <strong id="username-display" style="font-size: 15px; color: #facc15; font-family: 'Orbitron', sans-serif;">Tanjirul King</strong>
+                    <div style="font-size: 11px; color: #38bdf8;">👑 Gold Member</div>
                 </div>
-                <div>⚙️</div>
+                <div style="font-size: 20px;">⚡</div>
             </div>
 
             <div class="balance-box">
-                <span style="font-size: 12px; color: #94a3b8;">Total TPZ Balance</span>
-                <h1 id="balance" style="color: #facc15; margin: 8px 0; font-size: 34px;">0.00 TPZ</h1>
-                <span style="font-size: 11px; color: #22c55e;">🟢 Account Active (v3)</span>
+                <span style="font-size: 11px; color: #94a3b8; letter-spacing: 1px;">TOTAL TPZ BALANCE</span>
+                <div class="balance-amount" id="balance">0.00 TPZ</div>
+                <span style="font-size: 11px; color: #4ade80; background: rgba(74, 222, 128, 0.1); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(74, 222, 128, 0.3);">🟢 SECURE NODE ACTIVE</span>
             </div>
 
             <div class="card">
-                <h3 style="color: #38bdf8; margin-top: 0;">🚀 Welcome to Tanjirul Pay</h3>
-                <p style="font-size: 12px; color: #94a3b8; line-height: 1.4;">Complete social tasks, invite friends with your referral link, and claim daily streak rewards effortlessly.</p>
+                <h3 style="color: #38bdf8; margin-top: 0; font-size: 16px;">🚀 Tanjirul Pay & Mine</h3>
+                <p style="font-size: 12px; color: #94a3b8; line-height: 1.5;">Complete high-yield social tasks, invite peers via referral, and claim progressive daily streak rewards.</p>
                 <button class="btn-sm" onclick="switchTab('tab-tasks')">Explore Tasks ➔</button>
             </div>
         </div>
 
         <!-- 2. TASKS TAB -->
         <div id="tab-tasks" class="tab-content">
-            <h2 style="font-size: 18px; color: #facc15;">Daily Tasks & Socials</h2>
-            <p style="font-size: 12px; color: #94a3b8;">Complete tasks to earn TPZ tokens:</p>
+            <h2 style="font-size: 18px; color: #facc15; margin-bottom: 5px;">⚡ Daily Tasks & Socials</h2>
+            <p style="font-size: 12px; color: #94a3b8; margin-bottom: 15px;">Complete tasks to mine TPZ tokens:</p>
             
             <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
-                    <strong>📢 Join Telegram Channel</strong>
-                    <div style="font-size: 11px; color: #facc15; margin-top: 3px;">+50.00 TPZ</div>
+                    <strong style="font-size: 13px;">📢 Join Telegram Channel</strong>
+                    <div style="font-size: 12px; color: #facc15; margin-top: 4px; font-weight: bold;">+50.00 TPZ</div>
                 </div>
                 <div id="task-action-tg"></div>
             </div>
 
             <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
-                    <strong>🌐 Follow on Twitter (X)</strong>
-                    <div style="font-size: 11px; color: #facc15; margin-top: 3px;">+30.00 TPZ</div>
+                    <strong style="font-size: 13px;">🌐 Follow on Twitter (X)</strong>
+                    <div style="font-size: 12px; color: #facc15; margin-top: 4px; font-weight: bold;">+30.00 TPZ</div>
                 </div>
                 <div id="task-action-tw"></div>
             </div>
 
             <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
-                    <strong>👥 Follow Facebook Page</strong>
-                    <div style="font-size: 11px; color: #facc15; margin-top: 3px;">+30.00 TPZ</div>
+                    <strong style="font-size: 13px;">👥 Follow Facebook Page</strong>
+                    <div style="font-size: 12px; color: #facc15; margin-top: 4px; font-weight: bold;">+30.00 TPZ</div>
                 </div>
                 <div id="task-action-fb"></div>
             </div>
         </div>
 
-        <!-- 3. REFERRAL TAB -->
+        <!-- 3. REFERRAL TAB (Copy & Share Options) -->
         <div id="tab-referral" class="tab-content">
-            <h2 style="font-size: 18px; text-align: center; color: #facc15;">Referral Program</h2>
-            <p style="text-align: center; font-size: 12px; color: #94a3b8;">Invite friends and earn 50 TPZ per referral!</p>
+            <h2 style="font-size: 18px; text-align: center; color: #facc15;">👥 Referral Program</h2>
+            <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 15px;">Invite friends and earn 50 TPZ per referral!</p>
             
             <div class="card">
-                <p style="font-size: 12px; color: #94a3b8;">Your Referral Link:</p>
+                <p style="font-size: 12px; color: #94a3b8; margin-bottom: 5px;">Your Referral Link:</p>
                 <div id="ref-link" style="font-size: 11px; color: #facc15; word-break: break-all; background: #070913; padding: 12px; border-radius: 8px; margin-bottom: 12px; border: 1px solid rgba(250,204,21,0.2);">Loading...</div>
-                <button class="btn" onclick="copyRef()">Copy Link</button>
+                
+                <div class="btn-group">
+                    <button class="btn" style="margin-top:0;" onclick="copyRef()">📋 Copy Link</button>
+                    <button class="btn-share" style="margin-top:0;" onclick="shareRef()">🚀 Share</button>
+                </div>
             </div>
         </div>
 
         <!-- 4. COMBO TAB -->
         <div id="tab-combo" class="tab-content">
-            <h2 style="font-size: 18px; text-align: center; color: #facc15;">7 Days Combo Streak</h2>
-            <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 12px;">Login daily for progressive rewards!</p>
+            <h2 style="font-size: 18px; text-align: center; color: #facc15;">📅 7 Days Combo Streak</h2>
+            <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 15px;">Login daily for progressive rewards!</p>
             
             <div class="streak-grid" id="streak-container"></div>
-            <button class="btn" onclick="claimStreak()">Claim Today's Reward</button>
+            <button class="btn" onclick="claimStreak()">🎁 Claim Today's Reward</button>
         </div>
 
         <!-- 5. WALLET / MY TAB -->
         <div id="tab-wallet" class="tab-content">
-            <h2 style="font-size: 18px; color: #facc15;">My Account & Wallet</h2>
+            <h2 style="font-size: 18px; color: #facc15;">👤 My Account & Wallet</h2>
             <div class="card">
-                <div id="profile-name" style="font-weight: bold; font-size: 15px;">Tanjirul King</div>
+                <div id="profile-name" style="font-weight: bold; font-size: 15px; color: #38bdf8;">Tanjirul King</div>
                 <div id="profile-id" style="font-size: 11px; color: #94a3b8; margin-bottom: 10px;">@tanjirul_user</div>
-                <hr style="border: 0; border-top: 1px solid #374151; margin: 10px 0;">
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 10px 0;">
                 <div style="display: flex; justify-content: space-between; font-size: 13px;">
                     <span>Wallet Status:</span>
                     <span id="wallet-status" style="color: #ef4444; font-weight: bold;">Not Connected</span>
@@ -298,7 +350,7 @@
             alert("Claimed +" + amt + " TPZ!");
         }
 
-        // Tasks Logic (HTML Anchor Tag for guaranteed opening)
+        // Tasks Logic with guaranteed rendering & click triggers
         let taskRew = { tg: 50, tw: 30, fb: 30 };
         let taskUrls = { 
             tg: 'https://t.me/tanjirul0123', 
@@ -314,7 +366,7 @@
                 if (status === 'no') {
                     container.innerHTML = `<a href="${taskUrls[id]}" target="_blank" class="btn-sm" onclick="setTaskVisited('${id}')">Start</a>`;
                 } else if (status === 'visited') {
-                    container.innerHTML = `<button class="btn-sm" onclick="verifyTask('${id}')">Verify</button>`;
+                    container.innerHTML = `<button class="btn-sm" style="background:#eab308; color:#000;" onclick="verifyTask('${id}')">Verify</button>`;
                 } else if (status === 'done') {
                     container.innerHTML = `<button class="btn-sm" disabled style="background:#22c55e; color:#000;">Claimed</button>`;
                 }
@@ -323,7 +375,7 @@
 
         function setTaskVisited(id) {
             localStorage.setItem('task_' + id + '_' + userId, 'visited');
-            setTimeout(() => { renderTasks(); }, 600);
+            setTimeout(() => { renderTasks(); }, 500);
         }
 
         function verifyTask(id) {
@@ -339,6 +391,21 @@
         function copyRef() {
             navigator.clipboard.writeText(refUrl);
             alert("Referral link copied!");
+        }
+
+        function shareRef() {
+            let shareText = encodeURIComponent("⚡ Join Tanjirul Pay & Mine (TPZ) and start earning digital assets today! Use my link: " + refUrl);
+            let tgShareUrl = "https://t.me/share/url?url=" + encodeURIComponent(refUrl) + "&text=" + shareText;
+            
+            try {
+                if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.openTelegramLink) {
+                    window.Telegram.WebApp.openTelegramLink(tgShareUrl);
+                } else {
+                    window.open(tgShareUrl, '_blank');
+                }
+            } catch(e) {
+                window.open(tgShareUrl, '_blank');
+            }
         }
 
         // Wallet Logic
@@ -384,5 +451,5 @@
         }
     </script>
 </body>
-                </html>
-                                                                                        
+    </html>
+                                                                                
