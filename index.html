@@ -16,7 +16,7 @@
             padding: 15px;
             padding-bottom: 95px;
         }
-        h1, h2, h3, .brand, .balance-amount, .btn, .btn-sm, .btn-share {
+        h1, h2, h3, .brand, .balance-amount, .btn, .btn-task, .btn-share {
             font-family: 'Orbitron', sans-serif;
         }
         .container {
@@ -37,10 +37,13 @@
         .card {
             background: linear-gradient(135deg, #131b2e, #1e293b);
             border-radius: 16px;
-            padding: 18px;
+            padding: 16px 18px;
             margin-bottom: 14px;
             border: 1px solid rgba(250, 204, 21, 0.15);
             box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .balance-box {
             text-align: center;
@@ -73,21 +76,17 @@
             text-decoration: none;
             display: inline-block;
             box-shadow: 0 4px 15px rgba(250, 204, 21, 0.3);
-            transition: 0.2s;
         }
-        .btn:active { transform: scale(0.97); }
-        
         .btn-group {
             display: flex;
             gap: 10px;
             margin-top: 10px;
         }
-
-        .btn-sm {
+        .btn-task {
             background: linear-gradient(135deg, #38bdf8, #0284c7);
             color: #fff;
             border: none;
-            padding: 10px 18px;
+            padding: 10px 16px;
             border-radius: 10px;
             font-weight: 700;
             cursor: pointer;
@@ -96,8 +95,8 @@
             display: inline-block;
             text-align: center;
             box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+            white-space: nowrap;
         }
-        
         .btn-share {
             background: linear-gradient(135deg, #22c55e, #15803d);
             color: #fff;
@@ -114,7 +113,6 @@
             display: inline-block;
             box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
         }
-
         .streak-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -134,7 +132,6 @@
             border-color: #22c55e;
             color: #22c55e;
             background: rgba(34, 197, 94, 0.15);
-            box-shadow: 0 0 10px rgba(34, 197, 94, 0.2);
         }
         .nav-bar {
             position: fixed;
@@ -192,52 +189,52 @@
                 <span style="font-size: 11px; color: #4ade80; background: rgba(74, 222, 128, 0.1); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(74, 222, 128, 0.3);">🟢 SECURE NODE ACTIVE</span>
             </div>
 
-            <div class="card">
+            <div class="card" style="display: block;">
                 <h3 style="color: #38bdf8; margin-top: 0; font-size: 16px;">🚀 Tanjirul Pay & Mine</h3>
                 <p style="font-size: 12px; color: #94a3b8; line-height: 1.5;">Complete high-yield social tasks, invite peers via referral, and claim progressive daily streak rewards.</p>
-                <button class="btn-sm" onclick="switchTab('tab-tasks')">Explore Tasks ➔</button>
+                <button class="btn-task" style="width: 100%; margin-top: 5px;" onclick="switchTab('tab-tasks')">Explore Tasks ➔</button>
             </div>
         </div>
 
-        <!-- 2. TASKS TAB (Hardcoded visible buttons) -->
+        <!-- 2. TASKS TAB (Guaranteed Visible Hardcoded Buttons) -->
         <div id="tab-tasks" class="tab-content">
             <h2 style="font-size: 18px; color: #facc15; margin-bottom: 5px;">⚡ Daily Tasks & Socials</h2>
             <p style="font-size: 12px; color: #94a3b8; margin-bottom: 15px;">Complete tasks to mine TPZ tokens:</p>
             
             <!-- Telegram Task -->
-            <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="card">
                 <div>
                     <strong style="font-size: 13px;">📢 Join Telegram Channel</strong>
                     <div style="font-size: 12px; color: #facc15; margin-top: 4px; font-weight: bold;">+50.00 TPZ</div>
                 </div>
-                <a href="https://t.me/tanjirul0123" target="_blank" class="btn-sm" id="task-btn-tg" onclick="handleTask('tg')">Start</a>
+                <a href="https://t.me/tanjirul0123" target="_blank" class="btn-task" id="task-tg" onclick="completeTask('tg', 50)">Start</a>
             </div>
 
             <!-- Twitter Task -->
-            <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="card">
                 <div>
                     <strong style="font-size: 13px;">🌐 Follow on Twitter (X)</strong>
                     <div style="font-size: 12px; color: #facc15; margin-top: 4px; font-weight: bold;">+30.00 TPZ</div>
                 </div>
-                <a href="https://x.com/tanjirul_king" target="_blank" class="btn-sm" id="task-btn-tw" onclick="handleTask('tw')">Start</a>
+                <a href="https://x.com/tanjirul_king" target="_blank" class="btn-task" id="task-tw" onclick="completeTask('tw', 30)">Start</a>
             </div>
 
             <!-- Facebook Task -->
-            <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="card">
                 <div>
                     <strong style="font-size: 13px;">👥 Follow Facebook Page</strong>
                     <div style="font-size: 12px; color: #facc15; margin-top: 4px; font-weight: bold;">+30.00 TPZ</div>
                 </div>
-                <a href="https://www.facebook.com/share/1Qi2SaUBck/" target="_blank" class="btn-sm" id="task-btn-fb" onclick="handleTask('fb')">Start</a>
+                <a href="https://www.facebook.com/share/1Qi2SaUBck/" target="_blank" class="btn-task" id="task-fb" onclick="completeTask('fb', 30)">Start</a>
             </div>
         </div>
 
-        <!-- 3. REFERRAL TAB -->
+        <!-- 3. REFERRAL TAB (Copy & Share) -->
         <div id="tab-referral" class="tab-content">
             <h2 style="font-size: 18px; text-align: center; color: #facc15;">👥 Referral Program</h2>
             <p style="text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 15px;">Invite friends and earn 50 TPZ per referral!</p>
             
-            <div class="card">
+            <div class="card" style="display: block;">
                 <p style="font-size: 12px; color: #94a3b8; margin-bottom: 5px;">Your Referral Link:</p>
                 <div id="ref-link" style="font-size: 11px; color: #facc15; word-break: break-all; background: #070913; padding: 12px; border-radius: 8px; margin-bottom: 12px; border: 1px solid rgba(250,204,21,0.2);">Loading...</div>
                 
@@ -257,10 +254,10 @@
             <button class="btn" onclick="claimStreak()">🎁 Claim Today's Reward</button>
         </div>
 
-        <!-- 5. WALLET / MY TAB -->
+        <!-- 5. WALLET TAB -->
         <div id="tab-wallet" class="tab-content">
             <h2 style="font-size: 18px; color: #facc15;">👤 My Account & Wallet</h2>
-            <div class="card">
+            <div class="card" style="display: block;">
                 <div id="profile-name" style="font-weight: bold; font-size: 15px; color: #38bdf8;">Tanjirul King</div>
                 <div id="profile-id" style="font-size: 11px; color: #94a3b8; margin-bottom: 10px;">@tanjirul_user</div>
                 <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 10px 0;">
@@ -269,7 +266,7 @@
                     <span id="wallet-status" style="color: #ef4444; font-weight: bold;">Not Connected</span>
                 </div>
             </div>
-            <div class="card">
+            <div class="card" style="display: block;">
                 <div style="font-weight: bold; margin-bottom: 8px; font-size: 13px; color: #facc15;">Connect TON Wallet</div>
                 <input type="text" id="wallet-input" placeholder="EQ... or UQ..." style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #374151; background: #070913; color: white; box-sizing: border-box; font-size: 12px; margin-bottom: 10px; outline: none;">
                 <button class="btn" id="wallet-btn" onclick="toggleWallet()">Connect Wallet</button>
@@ -353,47 +350,34 @@
             alert("Claimed +" + amt + " TPZ!");
         }
 
-        // Tasks Logic (Robust & Simple)
-        let taskRew = { tg: 50, tw: 30, fb: 30 };
+        // Task Completion Logic
+        function completeTask(id, reward) {
+            let status = localStorage.getItem('task_' + id + '_' + userId);
+            if (status === 'done') return;
 
-        function handleTask(id) {
-            let status = localStorage.getItem('task_' + id + '_' + userId) || 'no';
-            let btn = document.getElementById('task-btn-' + id);
+            localStorage.setItem('task_' + id + '_' + userId, 'done');
+            balance += reward;
+            updateBal();
             
-            if (status === 'no') {
-                localStorage.setItem('task_' + id + '_' + userId, 'visited');
-                setTimeout(() => {
-                    btn.innerText = 'Verify';
-                    btn.style.background = 'linear-gradient(135deg, #eab308, #ca8a04)';
-                    btn.style.color = '#000';
-                }, 300);
-            } else if (status === 'visited') {
-                event.preventDefault(); // Stop link opening on second click
-                localStorage.setItem('task_' + id + '_' + userId, 'done');
-                balance += taskRew[id];
-                updateBal();
-                btn.innerText = 'Claimed';
-                btn.disabled = true;
-                btn.style.background = '#22c55e';
-                btn.style.color = '#000';
-                alert("Verified! Added +" + taskRew[id] + " TPZ");
-            }
+            let btn = document.getElementById('task-' + id);
+            btn.innerText = 'Claimed';
+            btn.style.background = '#22c55e';
+            btn.style.color = '#000';
+            btn.style.pointerEvents = 'none';
+            
+            alert("Task completed! Added +" + reward + " TPZ");
         }
 
-        // Restore task states on load
+        // Check task status on load
         ['tg', 'tw', 'fb'].forEach(id => {
             let status = localStorage.getItem('task_' + id + '_' + userId);
-            let btn = document.getElementById('task-btn-' + id);
-            if (btn) {
-                if (status === 'visited') {
-                    btn.innerText = 'Verify';
-                    btn.style.background = 'linear-gradient(135deg, #eab308, #ca8a04)';
-                    btn.style.color = '#000';
-                } else if (status === 'done') {
+            if (status === 'done') {
+                let btn = document.getElementById('task-' + id);
+                if (btn) {
                     btn.innerText = 'Claimed';
-                    btn.disabled = true;
                     btn.style.background = '#22c55e';
                     btn.style.color = '#000';
+                    btn.style.pointerEvents = 'none';
                 }
             }
         });
@@ -461,5 +445,5 @@
         }
     </script>
 </body>
-            </html>
+    </html>
     
